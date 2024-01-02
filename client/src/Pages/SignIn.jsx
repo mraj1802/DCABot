@@ -4,7 +4,7 @@ const SignIn = () => {
   return (
     <>
       
-    <section class=" 2xl:py-24 xl:py-20 lg:py-14 md:py-12 dsm:py-10 sm:py-8 bg-gray-100 min-h-[900px] h-full">
+    <section class=" 2xl:py-24 xl:py-20 lg:py-14 md:py-12 dsm:py-10 sm:py-8 bg-gray-100 min-h-[966px] h-full">
         <div class="flex flex-col items-center md:px-8 dsm:px-8 px-4 py-2 mx-auto lg:py-0">
             <div class="2xl:w-[30%] xl:w-[40%] lg:w-[50%] md:w-[60%] sm:w-[90%] space-y-6 rounded-lg  text-black">
               
