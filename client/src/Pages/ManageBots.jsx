@@ -6,7 +6,7 @@ const ManageBots = () => {
         <section class="py-6 bg-gray-100 min-h-[966px] h-full">
         <div class="flex flex-col items-center  px-8 py-2">
             <div class="w-full space-y-6 rounded-lg  text-black">
-                <div class="flex flex-col justify-center items-center gap-2 bg-[#2f4050] py-4 rounded-lg">
+                <div class="flex flex-col justify-center items-center gap-2 bg-[#1f2937] py-4 rounded-lg">
                     <h1 className="text-white text-2xl font-medium">DCA Bots</h1>
                     <div className="flex gap-3 items-center">
                         <div class="inline-flex items-center">
@@ -21,7 +21,7 @@ const ManageBots = () => {
                             </label>
                             </div>
                         </div>
-                        <p className="text-white">Show Active</p>
+                        <p className="text-gray-300">Show Active</p>
 
                     </div>
                 </div>
@@ -59,8 +59,68 @@ const ManageBots = () => {
                                 <td>infi</td>
                                 <td>ASAP</td>
                                 <td>NO</td>
-                                <td className="flex justify-center items-center">
-                                <label class="relative flex items-center cursor-pointer">
+                                <td className="flex justify-center items-center py-2">
+                                <label class="relative  cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer"/>
+                                <div class="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
+                                </label>
+                                </td>
+                            </tr>                           
+                            <tr className="py-10 hover:bg-gray-200 cursor-pointer">
+                                <td className="py-2">Test</td>
+                                <td>ETH/USDT</td>
+                                <td>20</td>
+                                <td>45</td>
+                                <td>6</td>
+                                <td>1.3</td>
+                                <td>1.08</td>
+                                <td>1</td>
+                                <td>1.5</td>
+                                <td>infi</td>
+                                <td>ASAP</td>
+                                <td>NO</td>
+                                <td className="flex justify-center items-center py-2">
+                                <label class="relative  cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer"/>
+                                <div class="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
+                                </label>
+                                </td>
+                            </tr>                           
+                            <tr className="py-10 hover:bg-gray-200 cursor-pointer">
+                                <td className="py-2">Test</td>
+                                <td>ETH/USDT</td>
+                                <td>20</td>
+                                <td>45</td>
+                                <td>6</td>
+                                <td>1.3</td>
+                                <td>1.08</td>
+                                <td>1</td>
+                                <td>1.5</td>
+                                <td>infi</td>
+                                <td>ASAP</td>
+                                <td>NO</td>
+                                <td className="flex justify-center items-center py-2">
+                                <label class="relative  cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer"/>
+                                <div class="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
+                                </label>
+                                </td>
+                            </tr>                           
+                            <tr className="py-10 hover:bg-gray-200 cursor-pointer">
+                                <td className="py-2">Test</td>
+                                <td>ETH/USDT</td>
+                                <td>20</td>
+                                <td>45</td>
+                                <td>6</td>
+                                <td>1.3</td>
+                                <td>1.08</td>
+                                <td>1</td>
+                                <td>1.5</td>
+                                <td>infi</td>
+                                <td>ASAP</td>
+                                <td>NO</td>
+                                <td className="flex justify-center items-center py-2">
+                                <label class="relative  cursor-pointer">
                                 <input type="checkbox" value="" class="sr-only peer"/>
                                 <div class="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
                                 </label>
@@ -68,12 +128,12 @@ const ManageBots = () => {
                             </tr>                           
                         </tbody>
                     </table>
-                       
+                        
                 </div>
             </div>
-              
+                
         </div>
-    </section>
+        </section>
     </>
   )
 }

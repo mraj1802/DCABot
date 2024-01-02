@@ -4,6 +4,7 @@ import Home from './Pages/Home'
 import SignIn from './Pages/SignIn'
 import CreateDcaBot from './Pages/CreateDcaBot'
 import ManageBots from './Pages/ManageBots'
+import ActiveBot from './Pages/ActiveBot'
 
 const AllRouter = () => {
   return (
@@ -12,6 +13,7 @@ const AllRouter = () => {
         <Route path="/signin" element={<SignIn/>}/>
         <Route path="/createbot" element={<CreateDcaBot/>}/>
         <Route path="/managebot" element={<ManageBots/>}/>
+        <Route path="/activebot" element={<ActiveBot/>}/>
     </Routes>
   
   )
