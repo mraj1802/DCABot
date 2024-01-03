@@ -1,6 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Modal from '../utils/Modal';
 
 const ManageBots = () => {
+    const [isModalOpen, setisModalOpen] = useState(false);
+
+    const handlemodal=()=>
+    {
+        console.log("isModalOpen",isModalOpen)
+        setisModalOpen(!isModalOpen)
+    }
   return (
     <>
         <section class="py-6 bg-gray-100 min-h-[966px] h-full">
@@ -60,72 +68,13 @@ const ManageBots = () => {
                                 <td>ASAP</td>
                                 <td>NO</td>
                                 <td className="flex justify-center items-center py-2">
-                                <label class="relative  cursor-pointer">
-                                <input type="checkbox" value="" class="sr-only peer"/>
-                                <div class="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
-                                </label>
+                                    <label class="relative  cursor-pointer" >
+                                    <input type="checkbox" value="" class="sr-only peer" onChange={handlemodal}/>
+                                    <div class="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
+                                    </label>
                                 </td>
                             </tr>                           
-                            <tr className="py-10 hover:bg-gray-200 cursor-pointer">
-                                <td className="py-2">Test</td>
-                                <td>ETH/USDT</td>
-                                <td>20</td>
-                                <td>45</td>
-                                <td>6</td>
-                                <td>1.3</td>
-                                <td>1.08</td>
-                                <td>1</td>
-                                <td>1.5</td>
-                                <td>infi</td>
-                                <td>ASAP</td>
-                                <td>NO</td>
-                                <td className="flex justify-center items-center py-2">
-                                <label class="relative  cursor-pointer">
-                                <input type="checkbox" value="" class="sr-only peer"/>
-                                <div class="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
-                                </label>
-                                </td>
-                            </tr>                           
-                            <tr className="py-10 hover:bg-gray-200 cursor-pointer">
-                                <td className="py-2">Test</td>
-                                <td>ETH/USDT</td>
-                                <td>20</td>
-                                <td>45</td>
-                                <td>6</td>
-                                <td>1.3</td>
-                                <td>1.08</td>
-                                <td>1</td>
-                                <td>1.5</td>
-                                <td>infi</td>
-                                <td>ASAP</td>
-                                <td>NO</td>
-                                <td className="flex justify-center items-center py-2">
-                                <label class="relative  cursor-pointer">
-                                <input type="checkbox" value="" class="sr-only peer"/>
-                                <div class="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
-                                </label>
-                                </td>
-                            </tr>                           
-                            <tr className="py-10 hover:bg-gray-200 cursor-pointer">
-                                <td className="py-2">Test</td>
-                                <td>ETH/USDT</td>
-                                <td>20</td>
-                                <td>45</td>
-                                <td>6</td>
-                                <td>1.3</td>
-                                <td>1.08</td>
-                                <td>1</td>
-                                <td>1.5</td>
-                                <td>infi</td>
-                                <td>ASAP</td>
-                                <td>NO</td>
-                                <td className="flex justify-center items-center py-2">
-                                <label class="relative  cursor-pointer">
-                                <input type="checkbox" value="" class="sr-only peer"/>
-                                <div class="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
-                                </label>
-                                </td>
-                            </tr>                           
+                                                     
                         </tbody>
                     </table>
                         
@@ -134,6 +83,7 @@ const ManageBots = () => {
                 
         </div>
         </section>
+        {isModalOpen && <Modal isModalOpen={isModalOpen} setisModalOpen={setisModalOpen}/>}
     </>
   )
 }
