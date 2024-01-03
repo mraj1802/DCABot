@@ -12,6 +12,11 @@ const Home = () => {
     const handleDivClick = () => {
         window.location.href = 'https://www.symrank.com/';
       };
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/signin");
+        return;
+    };
 
   return (
     <>
@@ -54,7 +59,9 @@ const Home = () => {
                             Logs
                         </h2>
                     </div>
-                    <div className="py-3 hover:bg-gray-200 cursor-pointer">
+                    <div className="py-3 hover:bg-gray-200 cursor-pointer"
+                        onClick={handleLogout}
+                    >
                         <h2 className="text-base text-blue-500  px-3">
                             Log Out
                         </h2>
