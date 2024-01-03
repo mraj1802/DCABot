@@ -21,9 +21,8 @@ const SignIn = () => {
                 localStorage.setItem("token", res.data.token);
                 alert("logged successful.");
                 navigate("/createbot");
-                return;
             } else {
-                alert("loging failed.");
+                alert("logging failed");
             }
         } catch (error) {
             console.log("error in login", error);
