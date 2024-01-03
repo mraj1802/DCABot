@@ -123,7 +123,7 @@ const CreateDcaBot = () => {
                   <button className="w-full p-2 bg-blue-600 border border-blue-600 hover:bg-transparent  text-white text-lg font-medium  rounded-md">Preview Bot</button>
                 </div>
               </form>
-s
+
 
             </div>
 
