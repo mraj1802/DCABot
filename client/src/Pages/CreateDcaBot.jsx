@@ -3,99 +3,130 @@ import React from 'react'
 const CreateDcaBot = () => {
   return (
     <>
-      <section class=" 3xl:py-16 2xl:py-10 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8">
+      <section class=" 3xl:py-16 2xl:py-10 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8 bg-gray-100">
         <div class="flex flex-col items-center md:px-8 dsm:px-8 px-4 py-2 mx-auto lg:py-0">
-            <div class="w-[60%] bg-white rounded-lg shadow-xl  md:mt-0  xl:p-0 text-black">
-              <div class="px-14 py-10">
-                <div class="flex items-center justify-center">
-                  {/* <div class="container max-w-screen-lg mx-auto"> */}
-                   
-                     
-                      {/* <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6"> */}
-                        {/* <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3"> */}
+            <div class="2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[80%] sm:w-[90%] space-y-6 rounded-lg text-black p-8 bg-[#1f2937]">
+              <h1 className="text-center border-b border-[#9a9ea0] text-xl text-gray-200 font-bold px-4 pb-4">CREATE DCA BOT</h1>
+              
+              <form action="" className="flex flex-col gap-5">
 
-                          <div class="lg:col-span-2">
-                            {/* <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
-                              <div class="md:col-span-5">
-                                <label for="full_name">Bot Name</label>
-                                <input type="text" name="full_name" id="full_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
-                              </div>
+                <div className="grid grid-cols-2 gap-10 text-white">
+                  <div>
+                    <label htmlFor="botname" className="text-xs text-gray-400 font-bold">Bot name</label>
+                    <input type="text" name="botname" id="botname" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Bot Name" />
+                  </div>
 
-                              <div class="md:col-span-5">
-                                <label for="email">Email Address</label>
-                                <input type="text" name="email" id="email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="email@domain.com" />
-                              </div>
+                  <div>
+                    <label htmlFor="pairs" className="text-xs text-gray-400 font-bold">Pairs</label>
+                    <select name="pairs" id="pairs" className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1.5 px-4 w-full focus:outline-none focus:border focus:border-white">
+                      <option className="text-black">Pairs</option>
+                      <option className="text-black">udt/sf</option>
+                    </select>
+                  </div>
 
-                              <div class="md:col-span-3">
-                                <label for="address">Address / Street</label>
-                                <input type="text" name="address" id="address" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
-                              </div>
-
-                              <div class="md:col-span-2">
-                                <label for="city">City</label>
-                                <input type="text" name="city" id="city" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
-                              </div>
-
-                              <div class="md:col-span-2">
-                                <label for="country">Country / region</label>
-                                <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                                  <input name="country" id="country" placeholder="Country" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
-                                  <button tabindex="-1" class="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600">
-                                    <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                                    </svg>
-                                  </button>
-                                  <button tabindex="-1" for="show_more" class="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-blue-600">
-                                    <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                                  </button>
-                                </div>
-                              </div>
-
-                              <div class="md:col-span-2">
-                                <label for="state">State / province</label>
-                                <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                                  <input name="state" id="state" placeholder="State" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
-                                  <button tabindex="-1" class="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600">
-                                    <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                                    </svg>
-                                  </button>
-                                  <button tabindex="-1" for="show_more" class="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-blue-600">
-                                    <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                                  </button>
-                                </div>
-                              </div>
-
-                              <div class="md:col-span-1">
-                                <label for="zipcode">Zipcode</label>
-                                <input type="text" name="zipcode" id="zipcode" class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="" value="" />
-                              </div>
-
-                              <div class="md:col-span-5">
-                                <div class="inline-flex items-center">
-                                  <input type="checkbox" name="billing_same" id="billing_same" class="form-checkbox" />
-                                  <label for="billing_same" class="ml-2">My billing address is different than above.</label>
-                                </div>
-                              </div>
-
-                            
-                              <div class="md:col-span-5 text-right">
-                                <div class="inline-flex items-end">
-                                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-                                </div>
-                              </div>
-
-                            </div> */}
-                          </div>
-                        {/* </div> */}
-                      {/* </div> */}
-                    
-                  {/* </div> */}
                 </div>
+
+                <div className="grid grid-cols-2 gap-10 text-white">
+                  <div>
+                    <label htmlFor="baseordersize" className="text-xs text-gray-400 font-bold">Base Order Size</label>
+                    <input type="number" name="baseordersize" id="baseordersize" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Base Order Size" />                  </div>
+                  <div>
+                  <div>
+                    <label htmlFor="safetyordersize" className="text-xs text-gray-400 font-bold">Safety Order Size</label>
+                    <input type="number" name="safetyordersize" id="safetyordersize" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Safety Order Size" />
+                  </div>
+                </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-10 text-white">
+                  <div>
+                      <label htmlFor="maxsafetyorder" className="text-xs text-gray-400 font-bold">Max Safety Orders</label>
+                      <input type="number" name="maxsafetyorder" id="maxsafetyorder" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Max Safety Orders" />
+                  </div>
+                  <div>
+                    <label htmlFor="safetyorderprice" className="text-xs text-gray-400 font-bold">Safety Order Price Deviation</label>
+                    <input type="number" name="safetyorderprice" id="safetyorderprice" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Safety Order Price Deviation" />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-10 text-white">
+                  <div>
+                    <label htmlFor="safetyordervolume" className="text-xs text-gray-400 font-bold">Safety Order Volume Scale</label>
+                    <input type="number" name="safetyordervolume" id="safetyordervolume" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Safety Order Volume Scale" />
+                    </div>
+                    
+                    <div>
+                    <label htmlFor="safetyorderstep" className="text-xs text-gray-400 font-bold">Safety Order Step Scale</label>
+                    <input type="number" name="safetyorderstep" id="safetyorderstep" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Safety Order Step Scale" />
+                    </div>
+                </div>
+               
+                <div className="grid grid-cols-2 gap-10 text-white">
+                  <div>
+                    <label htmlFor="targetprofit" className="text-xs text-gray-400 font-bold">Target Profit</label>
+                    <input type="number" name="targetprofit" id="targetprofit" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white" value="" placeholder="Enter Target Profit %" />
+                  </div>   
+                  
+                  <div>
+                  <label htmlFor="maxdeals" className="text-xs text-gray-400 font-bold">Max Deals</label>
+                  <input type="number" name="maxdeals" id="maxdeals" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Max Deals" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-10 text-white">
+                  <div>
+                    <label htmlFor="maxpairsdeal" className="text-xs text-gray-400 font-bold">Max Pairs Deals</label>
+                    <input type="number" name="maxpairsdeal" id="maxpairsdeal" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Max Pairs Deals" />
+                    </div>
+
+                    <div>
+                    <label htmlFor="minimumvol" className="text-xs text-gray-400 font-bold">Minimum 24h Volume</label>
+                    <input type="number" name="minimumvol" id="minimumvol" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Minimum 24h Volume / in Million" />
+                    </div>
+                </div>
+               
+                <div className="grid grid-cols-2 gap-10 text-white">
+                  <div>
+                    <label htmlFor="cooldowndeals" className="text-xs text-gray-400 font-bold">Cooldown Between Deals</label>
+                    <input type="number" name="cooldowndeals" id="cooldowndeals" class="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"  placeholder="Enter Cooldown Between Deals / in Seconds" />
+                  </div>
+
+                  <div>
+                    <label htmlFor="ordertype" className="text-xs text-gray-400 font-bold">Order Type</label>
+                    <select name="ordertype" id="ordertype" className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1.5 px-4 w-full focus:outline-none focus:border focus:border-white">
+                      <option className="text-black">MARKET</option>
+                      <option className="text-black">LIMIT</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-10 text-white">
+                  <div>
+                    <label htmlFor="ordertype" className="text-xs text-gray-400 font-bold">Start Condition</label>
+                      <select name="ordertype" id="ordertype" className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1.5 px-4 w-full focus:outline-none focus:border focus:border-white">
+                        <option className="text-black">Open new trade ASAP</option>
+                        <option className="text-black">Manually/Api</option>
+                      </select>
+                  </div>
+
+                  <div className="flex flex-col justify-center">
+                  <label htmlFor="ordertype" className="text-xs text-gray-400 font-bold py-2">Enabled</label>
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" className="sr-only peer" />
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                      </label>
+                  </div>
+                    
+                </div>
+
+              <div class=" py-4">
+                  <button className="w-full p-2 bg-blue-600 border border-blue-600 hover:bg-transparent  text-white text-lg font-medium  rounded-md">Preview Bot</button>
               </div>
-        </div>
+            </form>
+
+
+            </div>
+              
         </div>
     </section>
     </>

@@ -4,8 +4,11 @@ import Header from './component/Header'
 const Layout = ({children}) => {
   return (
     <>
-    <Header/>
+    <div className="h-full min-h-screen">
+
+    {/* <Header/> */}
       {children}
+    </div>
     </>
   )
 }
