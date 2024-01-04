@@ -27,9 +27,7 @@ const SignIn = () => {
                   </div>
                   </form>
               </div>
-
             </div>
-              
         </div>
     </section>
     </>

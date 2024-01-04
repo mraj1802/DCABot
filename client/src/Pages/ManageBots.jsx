@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import ModalComponent from '../utils/ModalComponent';
+import { IoHomeSharp } from "react-icons/io5";
+import { Link } from 'react-router-dom';
+
 
 const ManageBots = () => {
     const [isModalOpen, setisModalOpen] = useState(false);
@@ -18,7 +21,8 @@ const ManageBots = () => {
             </p>
           </div>
           <div className="w-full flex justify-end gap-6">
-            <button className="px-8 py-2 bg-green-600 border border-1 border-green-600 text-white font-medium rounded-md hover:text-green-600 hover:bg-transparent ">
+            <button className="px-8 py-2 bg-green-600 border border-1 border-green-600 text-white font-medium rounded-md hover:text-green-600 hover:bg-transparent "
+             onClick={() => setisModalOpen(!isModalOpen)}>
               Enable Bot
             </button>
             <button
@@ -52,6 +56,11 @@ const ManageBots = () => {
                         </div>
                         <p className="text-gray-300">Show Active</p>
 
+                    </div>
+                    <div className="absolute top-20 left-8 text-white hover:text-gray-300" >
+                    <Link to="/">
+                    <IoHomeSharp  fontSize={20}/>
+                    </Link>
                     </div>
                 </div>
 

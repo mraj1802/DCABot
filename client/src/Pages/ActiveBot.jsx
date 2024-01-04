@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { MdEdit } from "react-icons/md";
 import { TbMoneybag } from "react-icons/tb";
-import { IoCloseSharp } from "react-icons/io5";
+import { IoCloseSharp, IoHomeSharp } from "react-icons/io5";
 import { GrStatusDisabledSmall } from "react-icons/gr";
 import EditModal from "../utils/EditModal";
 import ModalComponent from "../utils/ModalComponent";
 import { AiFillCloseSquare } from "react-icons/ai";
 import DetailModal from "../utils/DetailModal";
+import { Link } from "react-router-dom";
 
 const ActiveBot = () => {
   const [iseditmodalopen, setiseditmodalopen] = useState(false);
@@ -38,7 +39,8 @@ const ActiveBot = () => {
         </div>
       </div>
       <div className="w-full flex justify-end gap-6">
-      <button disabled={!ischecked} className={`${!ischecked ? "opacity-60" : "hover:bg-transparent hover:text-red-600"} px-8 py-2 bg-red-600 border border-1 border-red-600 text-white font-medium rounded-md  `}>
+      <button disabled={!ischecked} className={`${!ischecked ? "opacity-60" : "hover:bg-transparent hover:text-red-600"} px-8 py-2 bg-red-600 border border-1 border-red-600 text-white font-medium rounded-md  `}
+      onClick={() => setiscloseModalopen(!isCloseModal)}>
           Close Deal
         </button>
         <button
@@ -58,7 +60,8 @@ const ActiveBot = () => {
         </p>
       </div>
       <div className="w-full flex justify-end gap-6">
-        <button className="px-8 py-2 bg-red-600 border border-1 border-red-600 text-white font-medium rounded-md hover:text-red-600 hover:bg-transparent ">
+        <button className="px-8 py-2 bg-red-600 border border-1 border-red-600 text-white font-medium rounded-md hover:text-red-600 hover:bg-transparent "
+        onClick={() => setisdisableModalopen(!isDisableModal)}>
           Disable Bot
         </button>
         <button
@@ -123,6 +126,11 @@ const ActiveBot = () => {
                 <p className="">
                   Active P/L : <span className="text-green-600">$NaN</span>
                 </p>
+              </div>
+              <div className="absolute top-20 left-8 text-white hover:text-gray-300" >
+                <Link to="/">
+                <IoHomeSharp  fontSize={20}/>
+                </Link>
               </div>
             </div>
 
