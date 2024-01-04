@@ -5,15 +5,14 @@ import { Link } from 'react-router-dom';
 import { IoHomeSharp } from 'react-icons/io5';
 
 const BotHistory = () => {
-    const [isDetailModal, setdetailmodalopen] = useState(false);
-
-
+    const [isDetailModal, setDetailModalOpen] = useState(false);
+    
     const DetailComponent = 
     (
         <>
             <div className="w-full flex justify-between items-center bg-[#1f2937] text-white font-medium py-1 text-start px-3">
             <h2>Order History ETH_USDT-3J31IJI-1703842368</h2>
-            <span onClick={()=>setdetailmodalopen(!isDetailModal)}><AiFillCloseSquare fontSize={24}/></span>
+            <span onClick={()=>setDetailModalOpen(!isDetailModal)}><AiFillCloseSquare fontSize={24}/></span>
             </div>
             <div>
             <table className="table-auto text-center w-full">
@@ -91,7 +90,7 @@ const BotHistory = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-gray-100 text-[13px]">
-                  <tr className="py-10 hover:bg-gray-200 cursor-pointer" onClick={() => setdetailmodalopen(!isDetailModal)}>
+                  <tr className="py-10 hover:bg-gray-200 cursor-pointer" onClick={() => setDetailModalOpen(!isDetailModal)}>
                     <td className="py-2">2023-12-29 03:09 PM</td>
                     <td>ETH9</td>
                     <td>ETH-USDT-637DOEL-1704184049</td>
@@ -112,4 +111,4 @@ const BotHistory = () => {
   )
 }
 
-export default BotHistory
+export default BotHistory;

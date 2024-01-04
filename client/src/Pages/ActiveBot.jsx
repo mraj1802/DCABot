@@ -10,14 +10,14 @@ import DetailModal from "../utils/DetailModal";
 import { Link } from "react-router-dom";
 
 const ActiveBot = () => {
-  const [iseditmodalopen, setiseditmodalopen] = useState(false);
-  const [isCloseModal, setiscloseModalopen] = useState(false);
-  const [isDisableModal, setisdisableModalopen] = useState(false);
-  const [isDetailModal, setdetailmodalopen] = useState(false);
-  const [ischecked, setchecked] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isCloseModal, setIsCloseModalOpen] = useState(false);
+  const [isDisableModal, setIsDisableModalOpen] = useState(false);
+  const [isDetailModal, setDetailModalOpen] = useState(false);
+  const [isChecked, setChecked] = useState(false);
 
   const handleChange = (event) => {
-    setchecked(event.target.checked);
+    setChecked(event.target.checked);
   }
 
   const closeDealComponent = (
@@ -39,13 +39,13 @@ const ActiveBot = () => {
         </div>
       </div>
       <div className="w-full flex justify-end gap-6">
-      <button disabled={!ischecked} className={`${!ischecked ? "opacity-60" : "hover:bg-transparent hover:text-red-600"} px-8 py-2 bg-red-600 border border-1 border-red-600 text-white font-medium rounded-md  `}
-      onClick={() => setiscloseModalopen(!isCloseModal)}>
+      <button disabled={!isChecked} className={`${!isChecked ? "opacity-60" : "hover:bg-transparent hover:text-red-600"} px-8 py-2 bg-red-600 border border-1 border-red-600 text-white font-medium rounded-md  `}
+      onClick={() => setIsCloseModalOpen(!isCloseModal)}>
           Close Deal
         </button>
         <button
           className="px-8 py-2 bg-[#1f2937] border border-1 border-[#1f2937] text-white rounded-md hover:text-[#1f2937] hover:bg-transparent "
-          onClick={() => setiscloseModalopen(!isCloseModal)}
+          onClick={() => setIsCloseModalOpen(!isCloseModal)}
         >
           Cancel
         </button>{" "}
@@ -61,12 +61,12 @@ const ActiveBot = () => {
       </div>
       <div className="w-full flex justify-end gap-6">
         <button className="px-8 py-2 bg-red-600 border border-1 border-red-600 text-white font-medium rounded-md hover:text-red-600 hover:bg-transparent "
-        onClick={() => setisdisableModalopen(!isDisableModal)}>
+        onClick={() => setIsDisableModalOpen(!isDisableModal)}>
           Disable Bot
         </button>
         <button
           className="px-8 py-2 bg-[#1f2937] border border-1 border-[#1f2937] text-white font-medium rounded-md hover:text-[#1f2937] hover:bg-transparent "
-          onClick={() => setisdisableModalopen(!isDisableModal)}
+          onClick={() => setIsDisableModalOpen(!isDisableModal)}
         >
           Cancel
         </button>
@@ -79,7 +79,7 @@ const ActiveBot = () => {
         <>
             <div className="w-full flex justify-between items-center bg-[#1f2937] text-white font-medium py-1 text-start px-3">
             <h2>Order History ETH_USDT-637DOEL-1704184049</h2>
-            <span onClick={()=>setdetailmodalopen(!isDetailModal)}><AiFillCloseSquare fontSize={24}/></span>
+            <span onClick={()=>setDetailModalOpen(!isDetailModal)}><AiFillCloseSquare fontSize={24}/></span>
             </div>
             <div>
             <table className="table-auto text-center w-full">
@@ -155,36 +155,31 @@ const ActiveBot = () => {
                 </thead>
                 <tbody className="bg-gray-100 text-[13px]">
                   <tr className="py-10 hover:bg-gray-200 cursor-pointer" >
-                    <td className="py-2" onClick={() => setdetailmodalopen(!isDetailModal)}>Test</td>
-                    <td onClick={() => setdetailmodalopen(!isDetailModal)}>ETH-USDT-637DOEL-1704184049</td>
+                    <td className="py-2" onClick={() => setDetailModalOpen(!isDetailModal)}>Test</td>
+                    <td onClick={() => setDetailModalOpen(!isDetailModal)}>ETH-USDT-637DOEL-1704184049</td>
                     <td>ETH/USDT</td>
-                    <td onClick={() => setdetailmodalopen(!isDetailModal)}>2h 28m 13s</td>
-                    <td onClick={() => setdetailmodalopen(!isDetailModal)}>$2397</td>
-                    <td onClick={() => setdetailmodalopen(!isDetailModal)}>$20</td>
-                    <td onClick={() => setdetailmodalopen(!isDetailModal)}>$0.15</td>
-                    <td onClick={() => setdetailmodalopen(!isDetailModal)}>1.5%</td>
-                    <td onClick={() => setdetailmodalopen(!isDetailModal)}>0/6</td>
-                    <td onClick={() => setdetailmodalopen(!isDetailModal)}>2/infi</td>
-                    <td onClick={() => setdetailmodalopen(!isDetailModal)}>ASAP</td>
+                    <td onClick={() => setDetailModalOpen(!isDetailModal)}>2h 28m 13s</td>
+                    <td onClick={() => setDetailModalOpen(!isDetailModal)}>$2397</td>
+                    <td onClick={() => setDetailModalOpen(!isDetailModal)}>$20</td>
+                    <td onClick={() => setDetailModalOpen(!isDetailModal)}>$0.15</td>
+                    <td onClick={() => setDetailModalOpen(!isDetailModal)}>1.5%</td>
+                    <td onClick={() => setDetailModalOpen(!isDetailModal)}>0/6</td>
+                    <td onClick={() => setDetailModalOpen(!isDetailModal)}>2/infi</td>
+                    <td onClick={() => setDetailModalOpen(!isDetailModal)}>ASAP</td>
                     <td className=" flex items-center">
                       <div className="w-full flex items-center justify-between text-sm">
-                        <span
-                         
-                        >
-                          <MdEdit  onClick={() => setiseditmodalopen(!iseditmodalopen)}/>
+                        <span>
+                          <MdEdit  onClick={() => setIsEditModalOpen(!isEditModalOpen)}/>
                         </span>
                         <span
                           className="text-lg font-extrabold"
-                          
                         >
-                          <IoCloseSharp onClick={() => setiscloseModalopen(!isCloseModal)}/>
+                          <IoCloseSharp onClick={() => setIsCloseModalOpen(!isCloseModal)}/>
                         </span>
                         {/* <span><TbMoneybag fill/></span> */}
                         {/* <span className="font-bold">$+</span> */}
-                        <span
-                          
-                        >
-                          <GrStatusDisabledSmall onClick={() => setisdisableModalopen(!isDisableModal)}/>
+                        <span>
+                          <GrStatusDisabledSmall onClick={() => setIsDisableModalOpen(!isDisableModal)}/>
                         </span>
                       </div>
                     </td>
@@ -195,10 +190,10 @@ const ActiveBot = () => {
           </div>
         </div>
       </section>
-      {iseditmodalopen && (
+      {isEditModalOpen && (
         <EditModal
-          iseditmodalopen={iseditmodalopen}
-          setiseditmodalopen={setiseditmodalopen}
+          isEditModalOpen={isEditModalOpen}
+          setIsEditModalOpen={setIsEditModalOpen}
         />
       )}
       {isCloseModal && <ModalComponent customComponent={closeDealComponent} />}

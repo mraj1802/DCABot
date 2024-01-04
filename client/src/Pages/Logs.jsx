@@ -55,15 +55,9 @@ const Logs = () => {
                             <p>2.26M</p>
                         </li>
                     </div>
-                   
-                    
-                    
-                    
                 </div>
             </div>
-               
             </div>
-                
         </div>
         </section>
     </>

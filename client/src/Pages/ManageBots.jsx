@@ -5,14 +5,11 @@ import { Link } from 'react-router-dom';
 
 
 const ManageBots = () => {
-    const [isModalOpen, setisModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handlemodal=()=>
-    {
-        setisModalOpen(!isModalOpen)
+    const handleModal=()=> {
+        setIsModalOpen(!isModalOpen)
     }
-
-
     const enableDisableComp = (
         <>
           <div className="text-start">
@@ -22,12 +19,12 @@ const ManageBots = () => {
           </div>
           <div className="w-full flex justify-end gap-6">
             <button className="px-8 py-2 bg-green-600 border border-1 border-green-600 text-white font-medium rounded-md hover:text-green-600 hover:bg-transparent "
-             onClick={() => setisModalOpen(!isModalOpen)}>
+             onClick={() => setIsModalOpen(!isModalOpen)}>
               Enable Bot
             </button>
             <button
               className="px-8 py-2 bg-[#1f2937] border border-1 border-[#1f2937] text-white font-medium rounded-md hover:text-[#1f2937] hover:bg-transparent "
-              onClick={() => setisModalOpen(!isModalOpen)}
+              onClick={() => setIsModalOpen(!isModalOpen)}
             >
               Cancel
             </button>
@@ -99,18 +96,15 @@ const ManageBots = () => {
                                 <td>NO</td>
                                 <td className="flex justify-center items-center py-2">
                                     <label className="relative  cursor-pointer" >
-                                    <input type="checkbox" value="" className="sr-only peer" onChange={handlemodal}/>
+                                    <input type="checkbox" value="" className="sr-only peer" onChange={handleModal}/>
                                     <div className="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
                                     </label>
                                 </td>
-                            </tr>                           
-                                                     
+                            </tr>
                         </tbody>
                     </table>
-                        
                 </div>
             </div>
-                
         </div>
         </section>
         {isModalOpen && <ModalComponent customComponent={enableDisableComp}/>}
