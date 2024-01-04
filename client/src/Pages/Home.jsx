@@ -44,7 +44,7 @@ const Home = () => {
                             DCA Bot Deals History
                         </h2>
                     </div>
-                    <div className="border-b border-gray-300 py-3 hover:bg-gray-200 cursor-pointer" onClick={handleDivClick}>
+                    <div className="border-b border-gray-300 py-3 hover:bg-gray-200 cursor-pointer" >
                         <h2 className="text-base text-blue-500  px-3">
                             SymRank Crypto Screener
                         </h2>

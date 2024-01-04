@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import DetailModal from '../utils/DetailModal';
 import { AiFillCloseSquare } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import { IoHomeSharp } from 'react-icons/io5';
 
 const BotHistory = () => {
     const [isDetailModal, setdetailmodalopen] = useState(false);
@@ -60,26 +62,17 @@ const BotHistory = () => {
               </div>
               <div className="text-gray-300 flex gap-4">
                 <div className="flex gap-1">
-                    <label htmlFor="" className="">From : </label>
+                    <label htmlFor="bot" className="">Bot : </label>
                     <input type="text" className="w-28 focus:outline-none rounded-sm text-[#1f2937] px-1"/>
-                </div>
-                <div className="flex gap-1">
-                    <label htmlFor="" className="">To : </label>
-                    <input type="text" className="w-28 focus:outline-none rounded-sm text-[#1f2937] px-1"/>
-                </div>
-                <div className="flex gap-1">
-                    <label htmlFor="" className="">Bot : </label>
-                    <select name="bot" id="" className="w-28 focus:outline-none rounded-sm text-[#1f2937] px-1">
-                        <option></option>
-                        <option>BOT</option>
-                        <option>BOT2</option>
-                        <option>ETH</option>
-                        <option>ETH2</option>
-                    </select>
                 </div>
                 <div>
-                    <button className="bg-gray-300 text-[#1f2937] rounded-md text-sm py-0.5 px-3">Search</button>
+                    <button className="bg-gray-300 border border-gray-300 hover:opacity-70 text-[#1f2937] rounded-md text-sm py-0.5 px-3">Search</button>
                 </div>
+              </div>
+              <div className="absolute top-32 left-8 text-white hover:text-gray-300" >
+                <Link to="/">
+                <IoHomeSharp  fontSize={20}/>
+                </Link>
               </div>
             </div>
 
