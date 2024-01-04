@@ -5,10 +5,10 @@ import { MdEdit } from "react-icons/md";
 const ActiveBot = () => {
   return (
     <>
-        <section class="py-6 bg-gray-100 min-h-[966px] h-full">
-            <div class="flex flex-col items-center  px-8 py-2">
-                <div class="w-full space-y-6 rounded-lg  text-black">
-                    <div class="flex flex-col justify-center items-center gap-2 bg-[#1f2937] py-4 rounded-lg">
+        <section className="py-6 bg-gray-100 min-h-[966px] h-full">
+            <div className="flex flex-col items-center  px-8 py-2">
+                <div className="w-full space-y-6 rounded-lg  text-black">
+                    <div className="flex flex-col justify-center items-center gap-2 bg-[#1f2937] py-4 rounded-lg">
                         <h1 className="text-white text-2xl font-medium">Active DCA Bot Deals</h1>
                         <div className="flex gap-6 items-center text-gray-300">
                             <p className="">In Deals: $60.28</p>
