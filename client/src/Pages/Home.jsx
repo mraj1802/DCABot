@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link,useNavigate } from 'react-router-dom'
+import SignIn from './SignIn'
 
 const Home = () => {
   const navigate=useNavigate()
@@ -20,7 +21,7 @@ const Home = () => {
 
   return (
     <>
-    <section className=" 3xl:py-16 2xl:py-10 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8  bg-gray-100 min-h-[966px] h-full">
+    {/* <section className=" 3xl:py-16 2xl:py-10 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8  bg-gray-100 min-h-[900px] h-full">
         <div className="flex flex-col items-center md:px-8 dsm:px-8 px-4 py-2 mx-auto lg:py-0">
             <div className="w-[25%] bg-white rounded-lg shadow-xl  md:mt-0  xl:p-0 text-black">
                     <div className=" px-12 py-10">
@@ -70,7 +71,9 @@ const Home = () => {
                 </div>
             </div>
         </div>
-    </section>
+    </section> */}
+   
+  
     </>
   )
 }

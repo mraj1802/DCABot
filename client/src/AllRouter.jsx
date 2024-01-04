@@ -10,10 +10,10 @@ import Configuration from './Pages/Configuration'
 import Logs from './Pages/Logs'
 import LiveLogs from './Pages/LiveLogs'
 
-const AllRouter = () => {
+const AllRouter = ({token}) => {
   return (
     <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path="/" element={<Home token={token}/>}/>
         <Route path="/signin" element={<SignIn/>}/>
         <Route path="/createbot" element={<CreateDcaBot/>}/>
         <Route path="/managebot" element={<ManageBots/>}/>

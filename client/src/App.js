@@ -13,8 +13,8 @@ function App() {
         }
     }, [token, navigate]);
   return (
-    <Layout>
-      <AllRouter/>
+    <Layout token={token}>
+      <AllRouter token={token}/>
     </Layout>
   );
 }
