@@ -26,6 +26,7 @@ const Header = () => {
     setIsDropdown(false);
   };
 
+
   const handleDropdown = () => {
     setIsDropdown(!isDropdown);
   };
@@ -93,7 +94,7 @@ const Header = () => {
                 <ul className="flex flex-col gap-3 cursor-pointer px-2">
                   {coinData.map((item,index)=>
                   <>
-                    <li onClick={() => handleSelect(index)} className="flex items-center gap-2 hover:text-blue-600"><span className="text-lg">{item.icon}</span>{item.name} </li>
+                    <li key={index} onClick={() => handleSelect(index)} className="flex items-center gap-2 hover:text-blue-600"><span className="text-lg">{item.icon}</span>{item.name} </li>
                   </>)}
                  </ul>
               </div>
