@@ -20,7 +20,7 @@ const SignIn = () => {
       if (res.status === 200) {
         localStorage.setItem("token", res.data.token);
         alert("logged successful.");
-        navigate("/createbot");
+        navigate("/");
       } else {
         alert("logging failed");
       }

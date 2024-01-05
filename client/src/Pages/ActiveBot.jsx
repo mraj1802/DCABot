@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { MdEdit } from "react-icons/md";
-import { TbMoneybag } from "react-icons/tb";
 import { IoCloseSharp, IoHomeSharp } from "react-icons/io5";
 import { GrStatusDisabledSmall } from "react-icons/gr";
 import EditModal from "../utils/EditModal";

@@ -11,7 +11,7 @@ const CreateDcaBot = () => {
             </h1>
 
             <form action="" className="flex flex-col gap-5">
-              <div className="grid grid-cols-2 gap-10 text-black">
+              <div className="grid grid-cols-2 sm:grid-cols-1 sm:gap-3 gap-10  text-black">
                 <div>
                   <label
                     htmlFor="botname"

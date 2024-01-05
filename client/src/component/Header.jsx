@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RxCaretDown } from "react-icons/rx";
-import { Link, useNavigate } from "react-router-dom";
-import { IoLogOutSharp } from "react-icons/io5";
+import { AiFillCaretDown } from "react-icons/ai";
+import {  useNavigate } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import { SiTether } from "react-icons/si";
@@ -9,21 +8,21 @@ import { SiEthereum } from "react-icons/si";
 import { SiBitcoinsv } from "react-icons/si";
 
 const Header = () => {
+  const coinData=[
+    {name:"BTC",icon:<SiBitcoinsv className="text-yellow-500"/>,bal:"12345"},
+    {name:"USDT",icon:<SiTether className="text-green-500"/>,bal:"12"},
+    {name:"ETH",icon:<SiEthereum className="text-gray-700"/>,bal:"5676777"},
+  ]
   const [isDropdown, setIsDropdown] = useState(false);
   const [isUserDropdown, setUserDropdown] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('USDT -Bal');
+  const [selectedValue, setSelectedValue] = useState(0);
   const dropdownRef = useRef(null);
   const userdropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  const coinData=[
-    {name:"BTC",icon:<SiBitcoinsv/>,bal:"12345"},
-    {name:"BTC",icon:<SiBitcoinsv/>,bal:"12345"},
-    {name:"BTC",icon:<SiBitcoinsv/>,bal:"12345"},
-  ]
 
-  const handleSelect = (value) => {
-    setSelectedValue(value);
+  const handleSelect = (index) => {
+    setSelectedValue(index);
     setIsDropdown(false);
   };
 
@@ -71,26 +70,32 @@ const Header = () => {
   return (
     <div className="border-b border-gray-200 flex justify-end items-center py-3 px-10">
       <div className="flex  items-center gap-3">
-        <div className="z-50 relative w-[150px]" ref={dropdownRef}>
+        <div className="z-50 relative w-[130px]" ref={dropdownRef}>
           <button
-            className="w-full flex justify-between gap-1 items-center py-1.5 px-4 font-medium border border-gray-400 text-black rounded-md text-base"
+            className="w-full flex justify-between gap-3 items-center  px-4 font-medium  text-black rounded-md text-base"
             onClick={handleDropdown}
           >
-           {selectedValue}
-            <span>
-              {" "}
-              <RxCaretDown />
+          <div className="flex flex-col text-[12px]">
+            <div className="flex items-center gap-2 text-sm">
+            <span>{coinData[selectedValue].icon}</span>{coinData[selectedValue].name}
+            </div>
+            <p className="text-start">Bal {coinData[selectedValue].bal}</p>
+          </div>
+            <span className="text-base text-black">
+      
+              <AiFillCaretDown/>
             </span>
           </button>
 
           {isDropdown && (
             <>
-              <div className="absolute bg-white z-50 top-12 right-0 left-0  p-2 py-3 px-2  border border-gray-200 shadow-xl rounded-md text-black font-normal">
+              <div className="absolute bg-white z-50 top-14 right-0 left-0  p-2 py-3 px-2  border border-gray-200 shadow-xl rounded-md text-black font-normal">
                 <ul className="flex flex-col gap-3 cursor-pointer px-2">
-                  <li onClick={() => handleSelect('USDT -Bal')} className="flex items-center gap-2 hover:text-blue-600"><span className="text-green-600 text-lg"><SiTether/></span>USDT</li>
-                  <li onClick={() => handleSelect('BTC -Bal')} className="flex items-center gap-2 hover:text-blue-600"><span className="text-yellow-500 text-lg"><SiBitcoinsv/></span>BTC </li>
-                  <li onClick={() => handleSelect('ETH -Bal')} className="flex items-center gap-2 hover:text-blue-600"><span className="text-gray-800 text-lg"><SiEthereum/></span>ETH </li>
-                </ul>
+                  {coinData.map((item,index)=>
+                  <>
+                    <li onClick={() => handleSelect(index)} className="flex items-center gap-2 hover:text-blue-600"><span className="text-lg">{item.icon}</span>{item.name} </li>
+                  </>)}
+                 </ul>
               </div>
             </>
           )}

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { IoCreate } from "react-icons/io5";
 import { FaHistory } from "react-icons/fa";
 import { GrDocumentConfig } from "react-icons/gr";
 import { IoCreateOutline } from "react-icons/io5";
@@ -22,7 +21,7 @@ const Sidebar = ({ token }) => {
   };
 
   return (
-    <div className="fixed border-r border-gray-200  h-full py-3">
+    <div className="w-[15%] 2xl:w-[16%] xl:w-[20%] lg:w-[20%] md:w-[25%] fixed border-r border-gray-200  h-full py-3">
       <div className="flex flex-col items-center py-2">
         <img
           src="/android-chrome-256x256.png"
@@ -33,9 +32,9 @@ const Sidebar = ({ token }) => {
       </div>
       <div className="flex flex-col gap-4 py-5 w-[100%]">
         <Link
-          to="/createbot"
+          to="/"
           className={`flex gap-2 items-center text-[15px] font-medium text-gray-800 hover:text-blue-500 py-3 px-6 ${linkStyle(
-            "/createbot"
+            "/"
           )}`}
         >
           <span>

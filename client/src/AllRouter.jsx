@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route,Routes } from 'react-router-dom'
-import Home from './Pages/Home'
 import SignIn from './Pages/SignIn'
 import CreateDcaBot from './Pages/CreateDcaBot'
 import ManageBots from './Pages/ManageBots'
@@ -10,12 +9,11 @@ import Configuration from './Pages/Configuration'
 import Logs from './Pages/Logs'
 import LiveLogs from './Pages/LiveLogs'
 
-const AllRouter = ({token}) => {
+const AllRouter = () => {
   return (
     <Routes>
-        <Route path="/" element={<Home token={token}/>}/>
+        <Route path="/" element={<CreateDcaBot/>}/>
         <Route path="/signin" element={<SignIn/>}/>
-        <Route path="/createbot" element={<CreateDcaBot/>}/>
         <Route path="/managebot" element={<ManageBots/>}/>
         <Route path="/activebot" element={<ActiveBot/>}/>
         <Route path="/bothistory" element={<BotHistory/>}/>
