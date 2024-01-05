@@ -36,7 +36,7 @@ const ManageBots = () => {
       );
   return (
     <>
-        <section className=" bg-gray-100 min-h-[966px] h-full">
+        <section className="-z-50 bg-gray-100 min-h-[966px] h-full">
         <div className="flex flex-col items-center py-4 px-4">
             <div className="w-full space-y-6 rounded-lg  text-black">
                 <div className="flex flex-col justify-center items-center gap-2 bg-[#1f2937] py-4 rounded-lg">

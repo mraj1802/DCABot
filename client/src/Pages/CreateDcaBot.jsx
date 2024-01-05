@@ -3,7 +3,7 @@ import React from 'react'
 const CreateDcaBot = () => {
   return (
       <>
-        <section className=" 3xl:py-16 2xl:py-10 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8">
+        <section className="-z-50 3xl:py-16 2xl:py-10 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8">
           <div className="flex flex-col items-center md:px-8 dsm:px-8 px-4 py-2 mx-auto lg:py-0">
             <div className="2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[80%] sm:w-[90%] space-y-6 rounded-lg text-black p-8 border border-gray-200 shadow-lg">
               <h1 className="text-center border-b border-[#9a9ea0] text-xl text-gray-700 font-bold px-4 pb-4">CREATE DCA BOT</h1>
