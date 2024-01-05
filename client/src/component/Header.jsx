@@ -39,7 +39,6 @@ const Header = () => {
 
   useEffect(() => {
     window.addEventListener("click", handleClickOutside);
-
     return () => {
       window.removeEventListener("click", handleClickOutside);
     };
@@ -47,7 +46,6 @@ const Header = () => {
 
   useEffect(() => {
     window.addEventListener("click", handleClickOutsideuser);
-
     return () => {
       window.removeEventListener("click", handleClickOutsideuser);
     };
