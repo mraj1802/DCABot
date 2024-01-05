@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PreviewOrderModel from "./PreviewOrderModel";
-import { FaEthereum, FaBitcoin } from 'react-icons/fa';
+import { FaEthereum, FaBitcoin } from "react-icons/fa";
 
 const CreateDcaBot = () => {
   const initialFormData = {
@@ -25,7 +25,7 @@ const CreateDcaBot = () => {
   const [formData, setFormData] = useState({ ...initialFormData });
   const [submittedData, setSubmittedData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
- 
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
@@ -55,7 +55,7 @@ const CreateDcaBot = () => {
         <div className="flex flex-col items-center md:px-8 dsm:px-8 px-4 py-2 mx-auto lg:py-0">
           <div className="2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[80%] sm:w-[90%] space-y-6 rounded-lg text-black p-8 bg-[#1f2937]">
             <h1 className="text-center border-b border-[#9a9ea0] text-xl text-gray-200 font-bold px-4 pb-4">
-              CREATE DCA BOT 
+              CREATE DCA BOT
             </h1>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -72,8 +72,8 @@ const CreateDcaBot = () => {
                     name="botname"
                     id="botname"
                     value={formData.botname}
-                  onChange={handleInputChange}
-                  className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    onChange={handleInputChange}
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
                     placeholder="Enter Bot Name"
                   />
                 </div>
@@ -93,12 +93,16 @@ const CreateDcaBot = () => {
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1.5 px-4 w-full focus:outline-none focus:border focus:border-white"
                   >
                     <option className="text-black">Select Pairs</option>
-                    <option className="text-black" value="BTC/USDT"><FaBitcoin className="text-black"/>BTC/USDT</option>
-                    <option className="text-black" value="ETH/USDT"><FaEthereum  className="text-black"/>ETH/USDT</option>
+                    <option className="text-black" value="BTC/USDT">
+                      <FaBitcoin className="text-black" />
+                      BTC/USDT
+                    </option>
+                    <option className="text-black" value="ETH/USDT">
+                      <FaEthereum className="text-black" />
+                      ETH/USDT
+                    </option>
                   </select>
-       
                 </div>
-         
               </div>
 
               <div className="grid grid-cols-2 gap-10 text-white">
@@ -132,8 +136,8 @@ const CreateDcaBot = () => {
                       name="safetyordersize"
                       id="safetyordersize"
                       value={formData.safetyordersize}
-                    onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                      onChange={handleInputChange}
+                      className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
                       placeholder="Enter Safety Order Size"
                     />
                   </div>
@@ -374,8 +378,12 @@ const CreateDcaBot = () => {
         </div>
       </section>
 
-      <PreviewOrderModel isOpen={isModalOpen} onClose={closeModal} submittedData={submittedData}  onModify={handleModify}/>
-
+      <PreviewOrderModel
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        submittedData={submittedData}
+        onModify={handleModify}
+      />
     </>
   );
 };
