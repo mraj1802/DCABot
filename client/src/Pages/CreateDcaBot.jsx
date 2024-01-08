@@ -13,6 +13,7 @@ const CreateDcaBot = () => {
   const qtys = useMemo(() => [], []);
   let deviationExceeded = false;
   const [calculatedData, setCalculatedData] = useState([]);
+  const [loading, setLoading] = useState(false);
   // const calculatedData = [];
 
   const calculatePrice = (deviation, basePrice) => {
@@ -202,22 +203,21 @@ const CreateDcaBot = () => {
 
   // let calculateData =[];
   const initialFormData = {
-    botname: "",
+    botName: "",
     pairs: "",
-    baseordersize: "",
-    safetyordersize: "",
-    maxsafetyorder: "",
-    safetyorderdeviation: "",
-    safetyordervolume: "",
-    safetyorderstep: "",
-    targetprofit: "",
-    maxdeals: "",
-    maxpairsdeal: "",
-    minimumvol: "",
-    cooldowndeals: "",
-    ordertype: "MARKET",
+    baseOrderSize: "",
+    safetyOrderSize: "",
+    maxSafetyOrder: "",
+    safetyOrderDeviation: "",
+    safetyOrderVolume: "",
+    safetyOrderStep: "",
+    targetProfit: "",
+    maxDeals: "",
+    maxPairsDeal: "",
+    minimumVol: "",
+    coolDownDeals: "",
+    orderType: "MARKET",
     startCondition: "Open new trade ASAP",
-    // enabled: false,
   };
 
   const pairs = [
@@ -329,16 +329,16 @@ const CreateDcaBot = () => {
               <div className="grid grid-cols-2 gap-10 ">
                 <div>
                   <label
-                    htmlFor="botname"
+                    htmlFor="botName"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Bot name
                   </label>
                   <input
                     type="text"
-                    name="botname"
-                    id="botname"
-                    value={formData.botname}
+                    name="botName"
+                    id="botName"
+                    value={formData.botName}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Bot Name"
@@ -381,16 +381,16 @@ const CreateDcaBot = () => {
               <div className="grid grid-cols-2 gap-10 ">
                 <div>
                   <label
-                    htmlFor="baseordersize"
+                    htmlFor="baseOrderSize"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Base Order Size
                   </label>
                   <input
                     type="number"
-                    name="baseordersize"
-                    id="baseordersize"
-                    value={formData.baseordersize}
+                    name="baseOrderSize"
+                    id="baseOrderSize"
+                    value={formData.baseOrderSize}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Base Order Size"
@@ -399,16 +399,16 @@ const CreateDcaBot = () => {
                 <div>
                   <div>
                     <label
-                      htmlFor="safetyordersize"
+                      htmlFor="safetyOrderSize"
                       className="text-xs text-gray-400 font-bold"
                     >
                       Safety Order Size
                     </label>
                     <input
                       type="number"
-                      name="safetyordersize"
-                      id="safetyordersize"
-                      value={formData.safetyordersize}
+                      name="safetyOrderSize"
+                      id="safetyOrderSize"
+                      value={formData.safetyOrderSize}
                       onChange={handleInputChange}
                       className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                       placeholder="Enter Safety Order Size"
@@ -420,16 +420,16 @@ const CreateDcaBot = () => {
               <div className="grid grid-cols-2 gap-10 ">
                 <div>
                   <label
-                    htmlFor="maxsafetyorder"
+                    htmlFor="maxSafetyOrder"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Max Safety Orders
                   </label>
                   <input
                     type="number"
-                    name="maxsafetyorder"
-                    id="maxsafetyorder"
-                    value={formData.maxsafetyorder}
+                    name="maxSafetyOrder"
+                    id="maxSafetyOrder"
+                    value={formData.maxSafetyOrder}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Max Safety Orders"
@@ -437,16 +437,16 @@ const CreateDcaBot = () => {
                 </div>
                 <div>
                   <label
-                    htmlFor="safetyorderdeviation"
+                    htmlFor="safetyOrderDeviation"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Safety Order Price Deviation
                   </label>
                   <input
                     type="number"
-                    name="safetyorderdeviation"
-                    id="safetyorderdeviation"
-                    value={formData.safetyorderdeviation}
+                    name="safetyOrderDeviation"
+                    id="safetyOrderDeviation"
+                    value={formData.safetyOrderDeviation}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Safety Order Price Deviation"
@@ -457,16 +457,16 @@ const CreateDcaBot = () => {
               <div className="grid grid-cols-2 gap-10">
                 <div>
                   <label
-                    htmlFor="safetyordervolume"
+                    htmlFor="safetyOrderVolume"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Safety Order Volume Scale
                   </label>
                   <input
                     type="number"
-                    name="safetyordervolume"
-                    id="safetyordervolume"
-                    value={formData.safetyordervolume}
+                    name="safetyOrderVolume"
+                    id="safetyOrderVolume"
+                    value={formData.safetyOrderVolume}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Safety Order Volume Scale"
@@ -475,16 +475,16 @@ const CreateDcaBot = () => {
 
                 <div>
                   <label
-                    htmlFor="safetyorderstep"
+                    htmlFor="safetyOrderStep"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Safety Order Step Scale
                   </label>
                   <input
                     type="number"
-                    name="safetyorderstep"
-                    id="safetyorderstep"
-                    value={formData.safetyorderstep}
+                    name="safetyOrderStep"
+                    id="safetyOrderStep"
+                    value={formData.safetyOrderStep}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Safety Order Step Scale"
@@ -495,34 +495,34 @@ const CreateDcaBot = () => {
               <div className="grid grid-cols-2 gap-10">
                 <div>
                   <label
-                    htmlFor="targetprofit"
+                    htmlFor="targetProfit"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Target Profit
                   </label>
                   <input
                     type="number"
-                    name="targetprofit"
-                    id="targetprofit"
-                    value={formData.targetprofit}
+                    name="targetProfit"
+                    id="targetProfit"
+                    value={formData.targetProfit}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Target Profit %"
                   />
                 </div>
 
-                <div>
+                {/*<div>
                   <label
-                    htmlFor="maxdeals"
+                    htmlFor="maxDeals"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Max Deals
                   </label>
                   <input
                     type="number"
-                    name="maxdeals"
-                    id="maxdeals"
-                    value={formData.maxdeals}
+                    name="maxDeals"
+                    id="maxDeals"
+                    value={formData.maxDeals}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Max Deals"
@@ -533,16 +533,16 @@ const CreateDcaBot = () => {
               <div className="grid grid-cols-2 gap-10">
                 <div>
                   <label
-                    htmlFor="maxpairsdeal"
+                    htmlFor="maxPairsDeal"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Max Pairs Deals
                   </label>
                   <input
                     type="number"
-                    name="maxpairsdeal"
-                    id="maxpairsdeal"
-                    value={formData.maxpairsdeal}
+                    name="maxPairsDeal"
+                    id="maxPairsDeal"
+                    value={formData.maxPairsDeal}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Max Pairs Deals"
@@ -551,16 +551,16 @@ const CreateDcaBot = () => {
 
                 <div>
                   <label
-                    htmlFor="minimumvol"
+                    htmlFor="minimumVol"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Minimum 24h Volume
                   </label>
                   <input
                     type="number"
-                    name="minimumvol"
-                    id="minimumvol"
-                    value={formData.minimumvol}
+                    name="minimumVol"
+                    id="minimumVol"
+                    value={formData.minimumVol}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Minimum 24h Volume / in Million"
@@ -571,33 +571,33 @@ const CreateDcaBot = () => {
               <div className="grid grid-cols-2 gap-10">
                 <div>
                   <label
-                    htmlFor="cooldowndeals"
+                    htmlFor="coolDownDeals"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Cooldown Between Deals
                   </label>
                   <input
                     type="number"
-                    name="cooldowndeals"
-                    id="cooldowndeals"
-                    value={formData.cooldowndeals}
+                    name="coolDownDeals"
+                    id="coolDownDeals"
+                    value={formData.coolDownDeals}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Cooldown Between Deals / in Seconds"
                   />
-                </div>
+                </div>*/}
 
                 <div>
                   <label
-                    htmlFor="ordertype"
+                    htmlFor="orderType"
                     className="text-xs text-gray-400 font-bold"
                   >
                     Order Type
                   </label>
                   <select
-                    name="ordertype"
-                    id="ordertype"
-                    value={formData.ordertype}
+                    name="orderType"
+                    id="orderType"
+                    value={formData.orderType}
                     onChange={handleInputChange}
                     className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1.5 px-4 w-full focus:outline-none focus:border focus:border-black"
                   >
@@ -626,21 +626,7 @@ const CreateDcaBot = () => {
                     <option className="text-black">Manually/Api</option>
                   </select>
                 </div>
-
-                {/* <div className="flex flex-col justify-center">
-                  <label
-                    htmlFor="enable"
-                    className="text-xs text-gray-400 font-bold py-2"
-                  >
-                    Enabled
-                  </label>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" value="" className="sr-only peer" />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                  </label>
-                </div> */}
               </div>
-
               <div className=" py-4">
                 <button className="w-full p-2 text-white bg-blue-600 border border-blue-600 hover:bg-transparent  hover:text-blue-600 text-lg font-medium  rounded-md">
                   Preview Bot
