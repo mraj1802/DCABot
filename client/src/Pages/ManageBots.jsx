@@ -1,14 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalComponent from "../utils/ModalComponent";
 import { IoHomeSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { Rings } from "react-loader-spinner";
+import axios from "axios";
 
 const ManageBots = () => {
   const [isModalOpen, setisModalOpen] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const [bots, setBots] = useState([]);
   const handlemodal = () => {
     setisModalOpen(!isModalOpen);
   };
+
+  const GetBotData = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get("http://localhost:8080/api/bot/all");
+      if (res.status === 200) {
+        setLoading(false);
+        setBots(res.data.data);
+      }
+    } catch (error) {
+      console.log("error in getbotData.", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    GetBotData();
+  }, []);
+
+  console.log("data", bots);
 
   const enableDisableComp = (
     <>
@@ -80,38 +103,46 @@ const ManageBots = () => {
                     <th className="border">Volume Scale</th>
                     <th className="border">Step Scale</th>
                     <th className="border">TP%</th>
-                    <th className="border">Max Deals</th>
                     <th className="border">Start</th>
-                    <th className="border">Sandbox</th>
                     <th className="border">Active</th>
                   </tr>
                 </thead>
-                <tbody className="bg-gray-100 text-[13px]">
-                  <tr className="py-10 hover:bg-gray-200 cursor-pointer">
-                    <td className="py-2">Test</td>
-                    <td>ETH/USDT</td>
-                    <td>20</td>
-                    <td>45</td>
-                    <td>6</td>
-                    <td>1.3</td>
-                    <td>1.08</td>
-                    <td>1</td>
-                    <td>1.5</td>
-                    <td>infi</td>
-                    <td>ASAP</td>
-                    <td>NO</td>
-                    <td className="flex justify-center items-center py-2">
-                      <label className="relative  cursor-pointer">
-                        <input
-                          type="checkbox"
-                          value=""
-                          className="sr-only peer"
-                          onChange={handlemodal}
-                        />
-                        <div className="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
-                      </label>
-                    </td>
-                  </tr>
+                <tbody className="bg-gray-100 text-[13px] w-full">
+                  {loading ? (
+                    <tr className="m-auto flex justify-center items-center">
+                      <Rings color="#00BFFF" height={80} width={80} />
+                    </tr>
+                  ) : (
+                    bots &&
+                    bots?.map((el, i) => (
+                      <tr
+                        key={i}
+                        className="py-10 hover:bg-gray-200 cursor-pointer"
+                      >
+                        <td className="py-2">{el.config["botname"]}</td>
+                        <td>{el.config["pairs"]}</td>
+                        <td>{el.config["baseordersize"]}</td>
+                        <td>{el.config["safetyordersize"]}</td>
+                        <td>{el.config["maxsafetyorder"]}</td>
+                        <td>{el.config["safetyorderdeviation"]}</td>
+                        <td>{el.config["safetyordervolume"]}</td>
+                        <td>{el.config["safetyorderstep"]}</td>
+                        <td>{el.config["targetprofit"]}</td>
+                        <td>{el.config["startCondition"]}</td>
+                        <td className="flex justify-center items-center py-2">
+                          <label className="relative  cursor-pointer">
+                            <input
+                              type="checkbox"
+                              value=""
+                              className="sr-only peer"
+                              onChange={handlemodal}
+                            />
+                            <div className="w-10 h-5 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[1px] border-gray-600 after:bg-gray-400 after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-blue-600"></div>
+                          </label>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

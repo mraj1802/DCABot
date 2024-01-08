@@ -2,10 +2,12 @@ const { Schema, model } = require("mongoose");
 
 const BotSchema = new Schema(
   {
-    active: Boolean,
-    botName: { type: String, required: true },
+    active: { type: Boolean, default: false },
+    // botName: { type: String, required: true },
     config: Object,
-    date: Date,
+    orders: Object,
+    date: { type: Date, default: Date.now() },
+    exchange: { type: String, default: "okx" },
   },
   {
     timestamps: true,

@@ -4,8 +4,10 @@ import Select, { components } from "react-select";
 import { SiEthereum } from "react-icons/si";
 import { SiBitcoinsv } from "react-icons/si";
 import "../custom.css";
+import axios from "axios";
 
 const CreateDcaBot = () => {
+  const calculatedData = [];
   const initialFormData = {
     botname: "",
     pairs: "",
@@ -16,10 +18,6 @@ const CreateDcaBot = () => {
     safetyordervolume: "",
     safetyorderstep: "",
     targetprofit: "",
-    maxdeals: "",
-    maxpairsdeal: "",
-    minimumvol: "",
-    cooldowndeals: "",
     ordertype: "MARKET",
     startCondition: "Open new trade ASAP",
     // enabled: false,
@@ -60,6 +58,7 @@ const CreateDcaBot = () => {
   const [submittedData, setSubmittedData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPair, setSelectedPair] = useState(pairs[0]);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (value) => {
     setSelectedPair(value);
@@ -89,6 +88,27 @@ const CreateDcaBot = () => {
     setIsModalOpen(false);
   };
 
+  const handleCreateBot = async () => {
+    const obj = {
+      config: { ...formData },
+      orders: calculatedData,
+    };
+    try {
+      setLoading(true);
+      const res = await axios.post("http://localhost:8080/api/bot/create", obj);
+      console.log(res);
+      if (res.status === 200) {
+        setLoading(false);
+        alert(res.data.msg);
+        return;
+      }
+    } catch (error) {
+      console.log("error in creating bot", error);
+      setLoading(false);
+    }
+  };
+
+  console.log("calculatedData", calculatedData);
   return (
     <>
       <section className=" 3xl:py-16 2xl:py-10 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8 ">
@@ -283,83 +303,6 @@ const CreateDcaBot = () => {
                     placeholder="Enter Target Profit %"
                   />
                 </div>
-
-                <div>
-                  <label
-                    htmlFor="maxdeals"
-                    className="text-xs text-gray-400 font-bold"
-                  >
-                    Max Deals
-                  </label>
-                  <input
-                    type="number"
-                    name="maxdeals"
-                    id="maxdeals"
-                    value={formData.maxdeals}
-                    onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
-                    placeholder="Enter Max Deals"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-10">
-                <div>
-                  <label
-                    htmlFor="maxpairsdeal"
-                    className="text-xs text-gray-400 font-bold"
-                  >
-                    Max Pairs Deals
-                  </label>
-                  <input
-                    type="number"
-                    name="maxpairsdeal"
-                    id="maxpairsdeal"
-                    value={formData.maxpairsdeal}
-                    onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
-                    placeholder="Enter Max Pairs Deals"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="minimumvol"
-                    className="text-xs text-gray-400 font-bold"
-                  >
-                    Minimum 24h Volume
-                  </label>
-                  <input
-                    type="number"
-                    name="minimumvol"
-                    id="minimumvol"
-                    value={formData.minimumvol}
-                    onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
-                    placeholder="Enter Minimum 24h Volume / in Million"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-10">
-                <div>
-                  <label
-                    htmlFor="cooldowndeals"
-                    className="text-xs text-gray-400 font-bold"
-                  >
-                    Cooldown Between Deals
-                  </label>
-                  <input
-                    type="number"
-                    name="cooldowndeals"
-                    id="cooldowndeals"
-                    value={formData.cooldowndeals}
-                    onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
-                    placeholder="Enter Cooldown Between Deals / in Seconds"
-                  />
-                </div>
-
                 <div>
                   <label
                     htmlFor="ordertype"
@@ -429,6 +372,9 @@ const CreateDcaBot = () => {
         onClose={closeModal}
         submittedData={submittedData}
         onModify={handleModify}
+        handleCreateBot={handleCreateBot}
+        calculatedData={calculatedData}
+        loading={loading}
       />
     </>
   );
