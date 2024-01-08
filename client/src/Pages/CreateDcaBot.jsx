@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PreviewOrderModel from "./PreviewOerderModel";
+import PreviewOrderModel from "./PreviewOrderModel";
 import Select, { components } from "react-select";
 import { SiEthereum } from "react-icons/si";
 import { SiBitcoinsv } from "react-icons/si";
