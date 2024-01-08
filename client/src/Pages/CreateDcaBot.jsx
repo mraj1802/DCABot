@@ -1,11 +1,206 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PreviewOrderModel from "./PreviewOrderModel";
 import Select, { components } from "react-select";
 import { SiEthereum } from "react-icons/si";
 import { SiBitcoinsv } from "react-icons/si";
+import axios from "axios";
 import "../custom.css";
 
 const CreateDcaBot = () => {
+  const [ethPrice, setEthPrice] = useState(null);
+  const prices = useMemo(() => [], []);
+  const amounts = useMemo(() => [], []);
+  const qtys = useMemo(() => [], []);
+  let deviationExceeded = false;
+  const [calculatedData, setCalculatedData] = useState([]);
+  // const calculatedData = [];
+
+  const calculatePrice = (deviation, basePrice) => {
+    const result = basePrice - basePrice * (deviation / 100);
+    return result;
+  };
+
+  const calculateDeviation = (deviation, index) => {
+    return deviation * index;
+  };
+
+  const calculateAverge = (prices) => {
+    let sum = 0;
+    const averages = prices.map((price, index) => {
+      const numericPrice = parseFloat(price);
+      sum += numericPrice;
+      const average = sum / (index + 1);
+      return average;
+    });
+
+    return isNaN(averages[averages.length - 1])
+      ? "0.00"
+      : averages[averages.length - 1].toFixed(2);
+  };
+
+  const calculateTarget = (average, target) => {
+    const result = parseFloat(average) + average * (target / 100);
+    return result;
+  };
+
+  const calculateAmount = (safetyorder, volume, index) => {
+    let result = safetyorder * volume;
+
+    for (let i = 1; i <= index - 2; i++) {
+      result *= volume;
+    }
+    return result;
+  };
+
+  const calculateQty = (price, amount) => {
+    const result = parseFloat(amount) / price;
+    return result;
+  };
+
+  const calculateSumAmount = (
+    amounts,
+    currentIndex,
+    baseorder,
+    safetyorder
+  ) => {
+    let sum = 0;
+    for (let i = 2; i <= currentIndex; i++) {
+      const numericAmount = parseFloat(amounts[i]);
+      const previousadd = parseFloat(baseorder) + parseFloat(safetyorder);
+      sum += i === 2 ? numericAmount + previousadd : numericAmount;
+    }
+    return sum.toFixed(2);
+  };
+
+  const calculateSumQty = (qtys, index, baseorder, safetyorder, price) => {
+    let sum = 0;
+    for (let i = 2; i <= index; i++) {
+      const numericQty = parseFloat(qtys[i].toFixed(5));
+      const previousadd = parseFloat(
+        parseFloat(baseorder) / price + parseFloat(safetyorder) / price
+      ).toFixed(5);
+      sum +=
+        i === 2
+          ? parseFloat(parseFloat(numericQty) + parseFloat(previousadd))
+          : parseFloat(numericQty);
+    }
+    return sum;
+  };
+
+  // All calculation
+
+  const calculateDcaBotData = async (formData, selectedPair) => {
+    console.log("form data inside calculation----------", formData);
+    for (let index = 0; index < formData.maxsafetyorder; index++) {
+      const Deviation = calculateDeviation(
+        formData.safetyorderdeviation,
+        index
+      );
+
+      if (Deviation >= 100) {
+        deviationExceeded = true;
+        continue;
+      }
+      const basePrice = ethPrice;
+      const price = calculatePrice(Deviation, basePrice);
+      prices.push(price);
+      const average = calculateAverge(prices);
+      const target = calculateTarget(average, formData.targetprofit);
+      const amount = calculateAmount(
+        formData.safetyordersize,
+        formData.safetyordervolume,
+        index
+      );
+      const qty = calculateQty(price, amount);
+      amounts.push(amount);
+      qtys.push(qty);
+
+      const sumamount = calculateSumAmount(
+        amounts,
+        index,
+        formData.baseordersize,
+        formData.safetyordersize
+      );
+      const sumQty = calculateSumQty(
+        qtys,
+        index,
+        formData.baseordersize,
+        formData.safetyordersize,
+        price
+      );
+
+      /* Array */
+
+      const dataEntry = {
+        no: index === 0 ? "Base Order" : index,
+        deviation: `${Deviation} %`,
+        price: `${parseFloat(price).toFixed(2)}`,
+        average: `${average}`,
+        target: `${parseFloat(target).toFixed(2)}`,
+        qty: `${
+          index === 0
+            ? (parseFloat(formData.baseordersize) / price).toFixed(5)
+            : index === 1
+            ? (parseFloat(formData.safetyordersize) / price).toFixed(5)
+            : parseFloat(qty).toFixed(5)
+        }`,
+        amount: `${
+          index === 0
+            ? parseFloat(formData.baseordersize).toFixed(2)
+            : index === 1
+            ? parseFloat(formData.safetyordersize).toFixed(2)
+            : parseFloat(amount).toFixed(2)
+        }`,
+        sumQty: `${
+          index === 0
+            ? (parseFloat(formData.baseordersize) / price).toFixed(5)
+            : index === 1
+            ? parseFloat(
+                parseFloat(formData.baseordersize) / price +
+                  parseFloat(formData.safetyordersize) / price
+              ).toFixed(5)
+            : parseFloat(sumQty).toFixed(5)
+        }`,
+        sumAmount: `${
+          index === 0
+            ? parseFloat(formData.baseordersize).toFixed(2)
+            : index === 1
+            ? parseFloat(
+                parseFloat(formData.baseordersize) +
+                  parseFloat(formData.safetyordersize)
+              ).toFixed(2)
+            : parseFloat(sumamount).toFixed(2)
+        }`,
+        type: formData.ordertype,
+      };
+
+      calculatedData.push(dataEntry);
+    }
+
+    return calculatedData;
+  };
+
+  // Fetch the real-time price of Ethereum on component mount
+  useEffect(() => {
+    const fetchEthPrice = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.coincap.io/v2/assets/ethereum"
+        );
+        // setEthPrice(response.data.ethereum.usd);
+        setEthPrice(response.data.data.priceUsd);
+      } catch (error) {
+        console.error("Error fetching Ethereum price:", error);
+      }
+    };
+
+    fetchEthPrice();
+    prices.length = 0;
+  }, [prices]);
+
+  console.log("calculate data..........", calculatedData);
+
+  // let calculateData =[];
   const initialFormData = {
     botname: "",
     pairs: "",
@@ -74,20 +269,34 @@ const CreateDcaBot = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const calculatedData = await calculateDcaBotData(
+      { ...formData },
+      selectedPair
+    );
+
     console.log("Submitted Data:", formData);
+    console.log("Calculated Data:", calculatedData);
+    setCalculatedData(calculatedData);
+
+    // setCalculatedData(calculatedData);
     setSubmittedData({ ...formData });
+
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
+    setCalculatedData([]);
     setIsModalOpen(false);
   };
 
   const handleModify = () => {
+    setCalculatedData([]);
     setIsModalOpen(false);
   };
+
+  // console.log("calculate in create----",calculateData);
 
   return (
     <>
@@ -429,6 +638,8 @@ const CreateDcaBot = () => {
         onClose={closeModal}
         submittedData={submittedData}
         onModify={handleModify}
+        calculateData={calculatedData}
+        // deviationExceeded={deviationExceeded}
       />
     </>
   );
