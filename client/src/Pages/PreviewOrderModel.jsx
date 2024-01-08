@@ -2,7 +2,7 @@ import React from "react";
 import { Oval } from "react-loader-spinner";
 
 // Modal component
-const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateData, loading }) => {
+const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateData,loading,handleCreateBot }) => {
     let deviationExceeded = false;
 
     console.log("calculate data..........",calculateData);
@@ -117,7 +117,7 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateD
                             >
                                 Modify
                             </button>
-                            
+
                             {/*<button*/}
                             {/*    // onClick={onCreate}*/}
                             {/*    className="p-2 bg-blue-600 text-white rounded-md"*/}
@@ -130,7 +130,7 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateD
                                 className="p-2 w-[90px] bg-blue-600 text-white rounded-md"
                             >
                                 {loading ? (
-                                    <Oval color="#FFFFFF" height={20} width={20} />
+                                    <Oval color="#FFFFFF" height={20} width={20}/>
                                 ) : (
                                     "Create"
                                 )}
