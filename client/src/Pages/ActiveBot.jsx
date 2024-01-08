@@ -3,7 +3,7 @@ import { MdEdit } from "react-icons/md";
 import { IoCloseSharp, IoHomeSharp } from "react-icons/io5";
 import { GrStatusDisabledSmall } from "react-icons/gr";
 import EditModal from "../utils/EditModal";
-import ModalComponent from "../utils/ModalComponent";
+// import ModalComponent from "../utils/ModalComponent.jsx--";
 import { AiFillCloseSquare } from "react-icons/ai";
 import DetailModal from "../utils/DetailModal";
 import { Link } from "react-router-dom";
@@ -200,10 +200,10 @@ const ActiveBot = () => {
           setiseditmodalopen={setiseditmodalopen}
         />
       )}
-      {isCloseModal && <ModalComponent customComponent={closeDealComponent} />}
+      {/* {isCloseModal && <ModalComponent customComponent={closeDealComponent} />}
       {isDisableModal && (
         <ModalComponent customComponent={DisableDealComponent} />
-      )}
+      )} */}
        {isDetailModal && <DetailModal childcomponent={DetailComponent}/>}
 
     </>
