@@ -5,9 +5,10 @@ import axios from "axios";
 const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
   const [ethPrice, setEthPrice] = useState(null);
   const prices = useMemo(() => [], []);
-  // const [prices, setPrices] = useState([]);
   const amounts = useMemo(() => [], []);
   const qtys = useMemo(() => [], []);
+  let deviationExceeded = false;
+
 
   const calculatePrice = (deviation, basePrice) => {
     const result = basePrice - basePrice * (deviation / 100);
@@ -18,28 +19,26 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
     return deviation * index;
   };
 
-  const calculateaverge = (prices) => {
+  const calculateAverge = (prices) => {
     let sum = 0;
     const averages = prices.map((price, index) => {
       const numericPrice = parseFloat(price);
       sum += numericPrice;
       const average = sum / (index + 1);
-      console.log(`Average at index ${index}: ${average.toFixed(2)}`);
       return average;
     });
 
-    console.log("Final Average:", averages[averages.length - 1]);
     return isNaN(averages[averages.length - 1])
       ? "0.00"
       : averages[averages.length - 1].toFixed(2);
   };
 
-  const calculatetarget = (average, target) => {
+  const calculateTarget = (average, target) => {
     const result = parseFloat(average) + average * (target / 100);
     return result;
   };
 
-  const calculateamount = (safetyorder, volume, index) => {
+  const calculateAmount = (safetyorder, volume, index) => {
     let result = safetyorder * volume;
 
     for (let i = 1; i <= index - 2; i++) {
@@ -48,12 +47,12 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
     return result;
   };
 
-  const calculateqty = (price, amount) => {
+  const calculateQty = (price, amount) => {
     const result = parseFloat(amount) / price;
     return result;
   };
 
-  const calculatesumamount = (
+  const calculateSumAmount = (
     amounts,
     currentIndex,
     baseorder,
@@ -68,7 +67,7 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
     return sum.toFixed(2);
   };
 
-  const calculatesumqty = (qtys, index, baseorder, safetyorder, price) => {
+  const calculateSumQty = (qtys, index, baseorder, safetyorder, price) => {
     let sum = 0;
     for (let i = 2; i <= index; i++) {
       const numericQty = parseFloat(qtys[i].toFixed(5));
@@ -98,7 +97,9 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
     };
 
     fetchEthPrice();
-  }, []);
+    prices.length = 0;
+  }, [isOpen]);
+
 
   return (
     <>
@@ -115,6 +116,7 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
               X
             </button>
             {submittedData && (
+                <>
               <table className="my-4 w-full border-collapse border border-gray-300 bg-[#1f2937] text-white">
                 <thead>
                   <tr>
@@ -146,30 +148,35 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
                         submittedData.safetyorderdeviation,
                         index
                       );
-                      const baseprice = ethPrice;
-                      const price = calculatePrice(Deviation, baseprice);
+
+                      if (Deviation >= 100) {
+                        deviationExceeded = true;
+                        return null; 
+                      }
+                      const basePrice = ethPrice;
+                      const price = calculatePrice(Deviation, basePrice);
                       prices.push(price);
-                      const average = calculateaverge(prices);
-                      const target = calculatetarget(
+                      const average = calculateAverge(prices);
+                      const target = calculateTarget(
                         average,
                         submittedData.targetprofit
                       );
-                      const amount = calculateamount(
+                      const amount = calculateAmount(
                         submittedData.safetyordersize,
                         submittedData.safetyordervolume,
                         index
                       );
-                      const qty = calculateqty(price, amount);
+                      const qty = calculateQty(price, amount);
                       amounts.push(amount);
                       qtys.push(qty);
 
-                      const sumamount = calculatesumamount(
+                      const sumamount = calculateSumAmount(
                         amounts,
                         index,
                         submittedData.baseordersize,
                         submittedData.safetyordersize
                       );
-                      const sumqty = calculatesumqty(
+                      const sumQty = calculateSumQty(
                         qtys,
                         index,
                         submittedData.baseordersize,
@@ -177,10 +184,12 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
                         price
                       );
 
+                     
+
                       return (
                         <tr key={`safetyorder_${index}`}>
                           <td className="border border-gray-300 px-4 py-2">
-                            {index + 1}
+                            {index === 0 ? "Base Order" : index}
                           </td>
                           <td className="border border-gray-300 px-4 py-2">
                             {Deviation} %
@@ -189,11 +198,9 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
                             ${parseFloat(price).toFixed(2)}
                           </td>
                           <td className="border border-gray-300 px-4 py-2">
-                            {" "}
                             ${average}
                           </td>
                           <td className="border border-gray-300 px-4 py-2">
-                            {" "}
                             ${parseFloat(target).toFixed(2)}
                           </td>
                           <td className="border border-gray-300 px-4 py-2">
@@ -236,7 +243,7 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
                                     parseFloat(submittedData.safetyordersize) /
                                       price
                                 ).toFixed(5)
-                              : parseFloat(sumqty).toFixed(5)}
+                              : parseFloat(sumQty).toFixed(5)}
                           </td>
                           <td className="border border-gray-300 px-4 py-2">
                             $
@@ -260,7 +267,16 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify }) => {
                   )}
                 </tbody>
               </table>
+             
+              {deviationExceeded && (
+                  <div className="text-red-500 text-center mt-4">
+                    No other orders generated due to price deviation exceeding 100%.
+                  </div>
+                )}
+              </>
             )}
+
+            
             <div className="flex justify-end mt-4 space-x-4">
               <button
                 onClick={onModify}

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import PreviewOrderModel from "./PreviewOrderModel";
-import { FaEthereum, FaBitcoin } from "react-icons/fa";
+import Select, { components } from "react-select";
+import { SiEthereum } from "react-icons/si";
+import { SiBitcoinsv } from "react-icons/si";
+import "../custom.css";
 
 const CreateDcaBot = () => {
   const initialFormData = {
@@ -22,14 +25,51 @@ const CreateDcaBot = () => {
     // enabled: false,
   };
 
+  const pairs = [
+    {
+      value: "BTC/USDT",
+      label: "BTC/USDT",
+      icon: <SiBitcoinsv className="text-yellow-500 text-lg" />,
+    },
+    {
+      value: "ETH/USDT",
+      label: "ETH/USDT",
+      icon: <SiEthereum className="text-gray-800 text-lg" />,
+    },
+  ];
+
+  const Option = (props) => (
+    <components.Option {...props} className="bg-red-300">
+      <div className="flex items-center gap-2 h-3">
+        {props.data.icon}
+        {props.data.label}
+      </div>
+    </components.Option>
+  );
+
+  const SingleValue = ({ children, ...props }) => (
+    <components.SingleValue {...props}>
+      <div className="flex items-center gap-2 focus:outline-none">
+        {selectedPair.icon}
+        {children}
+      </div>
+    </components.SingleValue>
+  );
+
   const [formData, setFormData] = useState({ ...initialFormData });
   const [submittedData, setSubmittedData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPair, setSelectedPair] = useState(pairs[0]);
+
+  const handleChange = (value) => {
+    setSelectedPair(value);
+  };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
+      pairs: selectedPair.value,
       [name]: type === "checkbox" ? checked : value,
     }));
   };
@@ -51,15 +91,15 @@ const CreateDcaBot = () => {
 
   return (
     <>
-      <section className=" 3xl:py-16 2xl:py-10 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8 bg-gray-100">
+      <section className=" 3xl:py-16 2xl:py-10 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8 ">
         <div className="flex flex-col items-center md:px-8 dsm:px-8 px-4 py-2 mx-auto lg:py-0">
-          <div className="2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[80%] sm:w-[90%] space-y-6 rounded-lg text-black p-8 bg-[#1f2937]">
-            <h1 className="text-center border-b border-[#9a9ea0] text-xl text-gray-200 font-bold px-4 pb-4">
+          <div className="2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[80%] sm:w-[90%] space-y-6 rounded-lg border border-gray-300 shadow-md text-black p-8 ">
+            <h1 className="text-center border-b border-[#9a9ea0] text-xl text-gray-700 font-bold px-4 pb-4">
               CREATE DCA BOT
             </h1>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-              <div className="grid grid-cols-2 gap-10 text-white">
+              <div className="grid grid-cols-2 gap-10 ">
                 <div>
                   <label
                     htmlFor="botname"
@@ -73,7 +113,7 @@ const CreateDcaBot = () => {
                     id="botname"
                     value={formData.botname}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Bot Name"
                   />
                 </div>
@@ -85,27 +125,33 @@ const CreateDcaBot = () => {
                   >
                     Pairs
                   </label>
-                  <select
-                    name="pairs"
-                    id="pairs"
-                    value={formData.pairs}
-                    onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1.5 px-4 w-full focus:outline-none focus:border focus:border-white"
-                  >
-                    <option className="text-black">Select Pairs</option>
-                    <option className="text-black" value="BTC/USDT">
-                      <FaBitcoin className="text-black" />
-                      BTC/USDT
-                    </option>
-                    <option className="text-black" value="ETH/USDT">
-                      <FaEthereum className="text-black" />
-                      ETH/USDT
-                    </option>
-                  </select>
+                  <Select
+                    className="custom-select"
+                    value={selectedPair}
+                    options={pairs}
+                    autoFocus
+                    onChange={handleChange}
+                    classNames={{
+                      control: (state) =>
+                        state.isFocused ? "border-red-600" : "border-green-300",
+                    }}
+                    // styles={{
+                    //   singleValue: (base) => ({
+                    //     ...base,
+                    //     display: "flex",
+                    //     alignItems: "center",
+
+                    //   })
+                    // }}
+                    components={{
+                      Option,
+                      SingleValue,
+                    }}
+                  />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-10 text-white">
+              <div className="grid grid-cols-2 gap-10 ">
                 <div>
                   <label
                     htmlFor="baseordersize"
@@ -119,7 +165,7 @@ const CreateDcaBot = () => {
                     id="baseordersize"
                     value={formData.baseordersize}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Base Order Size"
                   />{" "}
                 </div>
@@ -137,14 +183,14 @@ const CreateDcaBot = () => {
                       id="safetyordersize"
                       value={formData.safetyordersize}
                       onChange={handleInputChange}
-                      className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                      className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                       placeholder="Enter Safety Order Size"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-10 text-white">
+              <div className="grid grid-cols-2 gap-10 ">
                 <div>
                   <label
                     htmlFor="maxsafetyorder"
@@ -158,7 +204,7 @@ const CreateDcaBot = () => {
                     id="maxsafetyorder"
                     value={formData.maxsafetyorder}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Max Safety Orders"
                   />
                 </div>
@@ -175,13 +221,13 @@ const CreateDcaBot = () => {
                     id="safetyorderdeviation"
                     value={formData.safetyorderdeviation}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Safety Order Price Deviation"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-10 text-white">
+              <div className="grid grid-cols-2 gap-10">
                 <div>
                   <label
                     htmlFor="safetyordervolume"
@@ -195,7 +241,7 @@ const CreateDcaBot = () => {
                     id="safetyordervolume"
                     value={formData.safetyordervolume}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Safety Order Volume Scale"
                   />
                 </div>
@@ -213,13 +259,13 @@ const CreateDcaBot = () => {
                     id="safetyorderstep"
                     value={formData.safetyorderstep}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Safety Order Step Scale"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-10 text-white">
+              <div className="grid grid-cols-2 gap-10">
                 <div>
                   <label
                     htmlFor="targetprofit"
@@ -233,7 +279,7 @@ const CreateDcaBot = () => {
                     id="targetprofit"
                     value={formData.targetprofit}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Target Profit %"
                   />
                 </div>
@@ -251,13 +297,13 @@ const CreateDcaBot = () => {
                     id="maxdeals"
                     value={formData.maxdeals}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Max Deals"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-10 text-white">
+              <div className="grid grid-cols-2 gap-10">
                 <div>
                   <label
                     htmlFor="maxpairsdeal"
@@ -271,7 +317,7 @@ const CreateDcaBot = () => {
                     id="maxpairsdeal"
                     value={formData.maxpairsdeal}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Max Pairs Deals"
                   />
                 </div>
@@ -289,13 +335,13 @@ const CreateDcaBot = () => {
                     id="minimumvol"
                     value={formData.minimumvol}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Minimum 24h Volume / in Million"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-10 text-white">
+              <div className="grid grid-cols-2 gap-10">
                 <div>
                   <label
                     htmlFor="cooldowndeals"
@@ -309,7 +355,7 @@ const CreateDcaBot = () => {
                     id="cooldowndeals"
                     value={formData.cooldowndeals}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1 px-4 w-full focus:outline-none focus:border focus:border-black"
                     placeholder="Enter Cooldown Between Deals / in Seconds"
                   />
                 </div>
@@ -326,7 +372,7 @@ const CreateDcaBot = () => {
                     id="ordertype"
                     value={formData.ordertype}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1.5 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1.5 px-4 w-full focus:outline-none focus:border focus:border-black"
                   >
                     <option className="text-black">MARKET</option>
                     <option className="text-black">LIMIT</option>
@@ -334,7 +380,7 @@ const CreateDcaBot = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-10 text-white">
+              <div className="grid grid-cols-2 gap-10 ">
                 <div>
                   <label
                     htmlFor="startCondition"
@@ -347,7 +393,7 @@ const CreateDcaBot = () => {
                     id="startCondition"
                     value={formData.startCondition}
                     onChange={handleInputChange}
-                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1.5 px-4 w-full focus:outline-none focus:border focus:border-white"
+                    className="bg-transparent border border-[#9a9ea0] mt-1 rounded py-1.5 px-4 w-full focus:outline-none focus:border focus:border-black"
                   >
                     <option className="text-black">Open new trade ASAP</option>
                     <option className="text-black">Manually/Api</option>
@@ -369,7 +415,7 @@ const CreateDcaBot = () => {
               </div>
 
               <div className=" py-4">
-                <button className="w-full p-2 bg-blue-600 border border-blue-600 hover:bg-transparent  text-white text-lg font-medium  rounded-md">
+                <button className="w-full p-2 text-white bg-blue-600 border border-blue-600 hover:bg-transparent  hover:text-blue-600 text-lg font-medium  rounded-md">
                   Preview Bot
                 </button>
               </div>

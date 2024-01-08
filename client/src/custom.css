@@ -1,0 +1,12 @@
+.custom-select .Select__control {
+    border-color: initial; /* Set the initial border color */
+  }
+  
+  .custom-select .Select__control:hover {
+    border-color: your-custom-border-color; /* Set the border color on hover */
+  }
+  
+  .custom-select .Select__control--is-focused {
+    border-color: your-custom-border-color; /* Set the border color on focus */
+    box-shadow: none; /* Remove the default focus outline */
+  }
