@@ -3,8 +3,8 @@ import PreviewOrderModel from "./PreviewOrderModel";
 import Select, { components } from "react-select";
 import { SiEthereum } from "react-icons/si";
 import { SiBitcoinsv } from "react-icons/si";
-import axios from "axios";
 import "../custom.css";
+import axios from "axios";
 
 const CreateDcaBot = () => {
   const [ethPrice, setEthPrice] = useState(null);
@@ -282,7 +282,6 @@ const CreateDcaBot = () => {
 
     // setCalculatedData(calculatedData);
     setSubmittedData({ ...formData });
-
     setIsModalOpen(true);
   };
 
@@ -296,8 +295,27 @@ const CreateDcaBot = () => {
     setIsModalOpen(false);
   };
 
-  // console.log("calculate in create----",calculateData);
+  const handleCreateBot = async () => {
+    const obj = {
+      config: { ...formData },
+      orders: calculatedData,
+    };
+    try {
+      setLoading(true);
+      const res = await axios.post("http://localhost:8080/api/bot/create", obj);
+      console.log(res);
+      if (res.status === 200) {
+        setLoading(false);
+        alert(res.data.msg);
+        return;
+      }
+    } catch (error) {
+      console.log("error in creating bot", error);
+      setLoading(false);
+    }
+  };
 
+  console.log("calculatedData", calculatedData);
   return (
     <>
       <section className=" 3xl:py-16 2xl:py-10 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8 ">
@@ -638,8 +656,9 @@ const CreateDcaBot = () => {
         onClose={closeModal}
         submittedData={submittedData}
         onModify={handleModify}
+        handleCreateBot={handleCreateBot}
         calculateData={calculatedData}
-        // deviationExceeded={deviationExceeded}
+        loading={loading}
       />
     </>
   );
