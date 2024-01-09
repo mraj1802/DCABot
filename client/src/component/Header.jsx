@@ -9,6 +9,7 @@ import { SiBitcoinsv } from "react-icons/si";
 import { Oval } from "react-loader-spinner";
 import axios from "axios";
 
+
 const Header = () => {
   const coinData = [
     { name: "USDT", icon: <SiTether className="text-green-500" /> },
