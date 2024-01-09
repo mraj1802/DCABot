@@ -1,15 +1,10 @@
-const FetchBalance = require("../API/marketAPI");
+const {
+  FetchBalance,
+  CreateOrdersLimit,
+  CreateOrdersMarket,
+} = require("../API/marketAPI");
 const BotModel = require("../models/botShcema");
-const ccxt = require("ccxt");
-
-let options = { defaultType: "spot" };
-const exchange = new ccxt["okx"]({
-  enableRateLimit: true,
-  apiKey: process.env.OKX_API_KEY,
-  secret: process.env.OKX_API_SECRET,
-  password: process.env.OKX_PASSWORD,
-  options: options,
-});
+const exchange = require("../config/exchange");
 
 //it will activate Test modes
 exchange.setSandboxMode(true);
@@ -29,6 +24,103 @@ const createBot = async (req, res) => {
   } catch (error) {
     console.log("Error in creating bot", error.message);
     return res.status(500).send({ data: "Error in creating bot." });
+  }
+};
+
+const startBot = async (req, res) => {
+  const { id } = req.params;
+  let side = "buy";
+  //let updatedOrders = [];
+  try {
+    const botStart = await BotModel.findOneAndUpdate(
+      { _id: id },
+      { $set: { active: true } },
+      { new: true }
+    );
+    if (!botStart) {
+      return res
+        .status(401)
+        .json({ msg: "Error in bot start.", data: botStart });
+    }
+    if (
+      botStart.config["ordertype"] === "Limit" ||
+      botStart.config["ordertype"] === "limit"
+    ) {
+      for (let i = 0; i < botStart.orders.length; i++) {
+        let order = botStart.orders[i];
+        let amount = parseFloat(order.qty);
+        let price = parseFloat(order.price);
+        const orders = await CreateOrdersLimit(
+          exchange,
+          botStart.config["pairs"],
+          "limit",
+          side,
+          amount,
+          price
+        );
+        console.log("order id if........................", orders.id);
+        if (orders && orders.id) {
+          const updatedOrders = [...botStart.orders];
+          updatedOrders[i].orderID = orders.id;
+          // Update the entire orders array in the bot document
+          console.log("updatedOrders...", updatedOrders);
+          await BotModel.updateOne(
+            { _id: botStart._id },
+            { $set: { orders: updatedOrders } }
+          );
+        }
+      }
+    } else {
+      for (let i = 0; i < botStart.orders.length; i++) {
+        let order = botStart.orders[i];
+        let amount = parseFloat(order.qty);
+        let price = parseFloat(order.price);
+        if (i === 0) {
+          const orders = await CreateOrdersMarket(
+            exchange,
+            botStart.config["pairs"],
+            "market",
+            side,
+            amount
+          );
+          console.log("order market id if........................", orders.id);
+          if (orders && orders.id) {
+            const updatedOrders = [...botStart.orders];
+            updatedOrders[i].orderID = orders.id;
+            // Update the entire orders array in the bot document
+            console.log("updatedOrders...", updatedOrders);
+            await BotModel.updateOne(
+              { _id: botStart._id },
+              { $set: { orders: updatedOrders } }
+            );
+          }
+        } else {
+          const orders = await CreateOrdersLimit(
+            exchange,
+            botStart.config["pairs"],
+            "limit",
+            side,
+            amount,
+            price
+          );
+          console.log("order market id if........................", orders.id);
+          if (orders && orders.id) {
+            const updatedOrders = [...botStart.orders];
+            updatedOrders[i].orderID = orders.id;
+            // Update the entire orders array in the bot document
+            console.log("updatedOrders...", updatedOrders);
+            await BotModel.updateOne(
+              { _id: botStart._id },
+              { $set: { orders: updatedOrders } }
+            );
+          }
+        }
+      }
+    }
+    return res.status(200).json({ msg: "Bot started Successfully." });
+  } catch (error) {
+    console.log("Error in startBot bot", error.message);
+    return res.status(500).send({ data: "Error in startBot bot." });
   }
 };
 
@@ -81,4 +173,11 @@ const disableBot = async (req, res) => {
   // Your logic for disabling bot goes here
 };
 
-module.exports = { createBot, disableBot, getBalance, getAllBot, getActiveBot };
+module.exports = {
+  createBot,
+  disableBot,
+  getBalance,
+  getAllBot,
+  getActiveBot,
+  startBot,
+};

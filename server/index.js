@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cron = require("node-cron");
 const connectDB = require("../server/src/config/db");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -7,7 +8,9 @@ const HandleSocketConnection = require("../server/src/socket/connection");
 const cors = require("cors");
 const traderRouter = require("./src/routes/trader");
 const botRouter = require("./src/routes/bot");
-const PORT = 8080 || process.env.PORT;
+const watchDog = require("./src/utils/watchDog");
+const sellWatchDog = require("./src/utils/sellWatchDog");
+const PORT = 5000 || process.env.PORT;
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -15,6 +18,16 @@ mongoose.set("strictQuery", false);
 
 app.use("/api", traderRouter);
 app.use("/api/bot", botRouter);
+
+cron.schedule("* * * * *", async () => {
+  try {
+    //sellWatchDog()
+    //watchDog();
+    //console.log("Cron job executed successfully.");
+  } catch (error) {
+    console.error("Error in cron job method:", error);
+  }
+});
 
 connectDB();
 const server = app.listen(PORT, () => {
