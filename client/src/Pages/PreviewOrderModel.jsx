@@ -3,21 +3,16 @@ import React from "react";
 
 // Modal component
 const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateData }) => {
-  // let deviationExceeded = false;
-
-  console.log("calculate data..........",calculateData);
+  
+  // console.log("calculate data..........",calculateData);
 
 
   const deviationValues = calculateData.map(entry => parseFloat(entry.deviation));
-  console.log("deviationExceeded status-------",deviationValues);
+  // console.log("deviationExceeded status-------",deviationValues);
 
   const deviationExceeded = deviationValues.some(value => value >= 100);
 
-  console.log("deviationExceeded:", deviationExceeded);
-  // if (deviationValues.some(value => value >= 100)) {
-  //   console.log("inside the if");
-  //   deviationExceeded = true;
-  // }
+  // console.log("deviationExceeded:", deviationExceeded);
 
 
   return (
@@ -66,7 +61,11 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateD
                         </tr>
                         </thead>
                         <tbody>
-                        {calculateData.map((dataEntry, index) => (
+                        {calculateData.map((dataEntry, index) => {
+                          if (deviationExceeded && parseFloat(dataEntry.deviation) >= 100) {
+                            return null; 
+                          }
+                          return(
                             <tr key={`calculatedData_${index}`}>
                               <td className="border border-gray-300 px-4 py-2">
                                 {dataEntry.no}
@@ -99,7 +98,8 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateD
                                 {dataEntry.type}
                               </td>
                             </tr>
-                        ))}
+                          );
+                        })}
                         </tbody>
                       </table>
 

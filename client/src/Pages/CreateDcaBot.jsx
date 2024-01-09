@@ -132,10 +132,6 @@ const CreateDcaBot = () => {
           index
       );
 
-      // if (Deviation >= 100) {
-      //   deviationExceeded = true;
-      //   continue;
-      // }
       const basePrice = ethPrice;
       const price = calculatePrice(Deviation, basePrice);
       prices.push(price);
@@ -259,8 +255,8 @@ const CreateDcaBot = () => {
   };
 
   const handleInputChange = (e) => {
-    console.log("input--------",e.target.value);
-    console.log("target-------",e.target);
+      // console.log("input--------",e.target.value);
+      // console.log("target-------",e.target);
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -276,7 +272,7 @@ const CreateDcaBot = () => {
         selectedPair
     );
 
-    console.log("Submitted Data:", formData);
+    // console.log("Submitted Data:", formData);
     // console.log("Calculated Data:", calculatedData);
     setCalculatedData(calculatedData);
 
@@ -344,14 +340,14 @@ const CreateDcaBot = () => {
                           control: (state) =>
                               state.isFocused ? "border-red-600" : "border-green-300",
                         }}
-                        // styles={{
-                        //   singleValue: (base) => ({
-                        //     ...base,
-                        //     display: "flex",
-                        //     alignItems: "center",
+                        styles={{
+                          singleValue: (base) => ({
+                            ...base,
+                            display: "flex",
+                            alignItems: "center",
 
-                        //   })
-                        // }}
+                          })
+                        }}
                         components={{
                           Option,
                           SingleValue,
