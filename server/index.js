@@ -9,14 +9,17 @@ const traderRouter = require("./src/routes/trader");
 const botRouter = require("./src/routes/bot");
 const PORT = 8080 || process.env.PORT;
 const app = express();
+const bodyParser = require('body-parser');
+
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(cors());
 mongoose.set("strictQuery", false);
 
 app.use("/api", traderRouter);
 app.use("/api/bot", botRouter);
 
-connectDB();
+await connectDB();
 const server = app.listen(PORT, () => {
   console.log(`server connected at the port ${PORT}`);
 });

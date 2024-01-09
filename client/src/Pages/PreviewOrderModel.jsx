@@ -1,21 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 
+const PreviewOrderModel = ({ isOpen, onClose,onModify,calculateData }) => {
+    const deviationValues = calculateData.map(entry => parseFloat(entry.deviation));
+    const deviationExceeded = deviationValues.some(value => value >= 100);
 
-// Modal component
-const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateData }) => {
-  
-  // console.log("calculate data..........",calculateData);
+    const handleCreateBot = () => {
+        console.log("in handleCreateBot");
+    }
 
-
-  const deviationValues = calculateData.map(entry => parseFloat(entry.deviation));
-  // console.log("deviationExceeded status-------",deviationValues);
-
-  const deviationExceeded = deviationValues.some(value => value >= 100);
-
-  // console.log("deviationExceeded:", deviationExceeded);
-
-
-  return (
+    return (
       <>
         {isOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -29,7 +22,6 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateD
                 >
                   X
                 </button>
-                {submittedData && (
                     <>
                       <table className="my-4 w-full border-collapse border border-gray-300 bg-[#1f2937] text-white">
                         <thead>
@@ -63,10 +55,10 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateD
                         <tbody>
                         {calculateData.map((dataEntry, index) => {
                           if (deviationExceeded && parseFloat(dataEntry.deviation) >= 100) {
-                            return null; 
+                            return null;
                           }
                           return(
-                            <tr key={`calculatedData_${index}`}>
+                            <tr key={`data${index}`}>
                               <td className="border border-gray-300 px-4 py-2">
                                 {dataEntry.no}
                               </td>
@@ -102,7 +94,6 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateD
                         })}
                         </tbody>
                       </table>
-
                       {deviationExceeded && (
                           <div className="text-red-500 text-center mt-4">
                             No other orders generated due to price deviation exceeding
@@ -110,8 +101,6 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateD
                           </div>
                       )}
                     </>
-                )}
-
                 <div className="flex justify-end mt-4 space-x-4">
                   <button
                       onClick={onModify}
@@ -120,14 +109,12 @@ const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateD
                     Modify
                   </button>
                   <button
-                      // onClick={onCreate}
+                      onClick={handleCreateBot}
                       className="p-2 bg-blue-600 text-white rounded-md"
                   >
                     Create
                   </button>
                 </div>
-
-                {/* {console.log("Calculated Data:", calculatedData)} */}
               </div>
             </div>
         )}
