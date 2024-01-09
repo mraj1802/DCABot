@@ -5,6 +5,7 @@ import { SiEthereum } from "react-icons/si";
 import { SiBitcoinsv } from "react-icons/si";
 import "../custom.css";
 import axios from "axios";
+import bot from "../config/bot.json";
 
 const CreateDcaBot = () => {
   const [ethPrice, setEthPrice] = useState(null);
@@ -14,14 +15,32 @@ const CreateDcaBot = () => {
   let deviationExceeded = false;
   const [calculatedData, setCalculatedData] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const calculatedData = [];
+
+  const initialFormData = {
+    botName: "",
+    pairs: "" || bot["pairs"],
+    baseOrderSize: "" || bot["baseOrderSize"],
+    safetyOrderSize: "" || bot["safetyOrderSize"],
+    maxSafetyOrder: "" || bot["maxSafetyOrder"],
+    safetyOrderDeviation: "" || bot["safetyOrderDeviation"],
+    safetyOrderVolume: "" || bot["safetyOrderVolume"],
+    safetyOrderStep: "" || bot["safetyOrderStep"],
+    targetProfit: "" || bot["targetProfit"],
+    orderType: "" || bot["orderType"],
+    startCondition: "" || bot["startCondition"],
+    filled: 0,
+  };
+
+  console.log("bot....", bot);
 
   const calculatePrice = (deviation, basePrice) => {
+    console.log("price...", deviation, basePrice);
     const result = basePrice - basePrice * (deviation / 100);
     return result;
   };
 
   const calculateDeviation = (deviation, index) => {
+    console.log("deviation...", deviation, index);
     return deviation * index;
   };
 
@@ -130,8 +149,9 @@ const CreateDcaBot = () => {
         price
       );
 
-      /* Array */
+      console.log("dataEntry", Deviation, price);
 
+      /* Array */
       const dataEntry = {
         no: index === 0 ? "Base Order" : index,
         deviation: `${Deviation} %`,
@@ -174,7 +194,7 @@ const CreateDcaBot = () => {
         }`,
         type: formData.ordertype,
       };
-
+      console.log("dataEntry", dataEntry);
       calculatedData.push(dataEntry);
     }
 
@@ -200,25 +220,6 @@ const CreateDcaBot = () => {
   }, [prices]);
 
   console.log("calculate data..........", calculatedData);
-
-  // let calculateData =[];
-  const initialFormData = {
-    botName: "",
-    pairs: "",
-    baseOrderSize: "",
-    safetyOrderSize: "",
-    maxSafetyOrder: "",
-    safetyOrderDeviation: "",
-    safetyOrderVolume: "",
-    safetyOrderStep: "",
-    targetProfit: "",
-    maxDeals: "",
-    maxPairsDeal: "",
-    minimumVol: "",
-    coolDownDeals: "",
-    orderType: "MARKET",
-    startCondition: "Open new trade ASAP",
-  };
 
   const pairs = [
     {
@@ -302,7 +303,7 @@ const CreateDcaBot = () => {
     };
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:8080/api/bot/create", obj);
+      const res = await axios.post("http://localhost:5000/api/bot/create", obj);
       console.log(res);
       if (res.status === 200) {
         setLoading(false);

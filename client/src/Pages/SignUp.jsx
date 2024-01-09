@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { Oval } from "react-loader-spinner";
 import { BsEyeSlashFill, BsEyeFill } from "react-icons/bs";
-const SignIn = () => {
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+function SignUp() {
   const [state, setState] = useState({
     username: "",
     password: "",
+    email: "",
+    confirmPassword: "",
   });
-  const navigate = useNavigate();
-  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const [showpassowrd, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -18,23 +21,26 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      const res = await axios.post("http://localhost:5000/api/login", state);
-      if (res.status === 200) {
-        localStorage.setItem("token", res.data.token);
-        setLoading(false);
-        alert(res.data.msg);
-        navigate("/");
+      if (state.password === state.confirmPassword) {
+        setLoading(true);
+        const res = await axios.post("http://localhost:5000/api/signup", state);
+        if (res.status === 200) {
+          setLoading(false);
+          alert(res.data.msg);
+          navigate("/signin");
+          return;
+        }
       } else {
-        alert("logging failed");
+        alert("Password Not Matched.");
         setLoading(false);
       }
     } catch (error) {
-      console.log("error in login", error);
+      console.log("error in signUp.", error);
       alert(error.response.data.msg);
       setLoading(false);
     }
   };
+
   return (
     <>
       <section className=" 2xl:py-36 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8">
@@ -48,24 +54,36 @@ const SignIn = () => {
               >
                 <div>
                   <input
-                    type="username"
+                    type="text"
                     name="username"
                     id="username"
                     className="border-b border-b-gray-300 text-gray-900 sm:text-sm focus:outline-none focus:border-black block w-full px-2.5 py-2 "
                     placeholder="Enter username Address"
-                    required=""
+                    required
                     value={state.username}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    className="border-b border-b-gray-300 text-gray-900 sm:text-sm focus:outline-none focus:border-black block w-full px-2.5 py-2 "
+                    placeholder="Enter email Address"
+                    required
+                    value={state.email}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="relative">
                   <input
-                    type="password"
+                    type={show ? "text" : "password"}
                     name="password"
                     id="password"
                     placeholder="Enter Password"
                     className="border-b border-b-gray-300 text-gray-900 sm:text-sm focus:outline-none focus:border-black block w-full px-2.5 py-2"
-                    required=""
+                    required
                     value={state.password}
                     onChange={handleChange}
                   />
@@ -83,7 +101,31 @@ const SignIn = () => {
                     )}
                   </div>
                 </div>
-
+                <div className="relative">
+                  <input
+                    type={showpassowrd ? "text" : "password"}
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    placeholder="Enter confirm Password"
+                    className="border-b border-b-gray-300 text-gray-900 sm:text-sm focus:outline-none focus:border-black block w-full px-2.5 py-2"
+                    required
+                    value={state.confirmPassword}
+                    onChange={handleChange}
+                  />
+                  <div className="absolute top-1/2 right-3 transform -translate-y-1/2">
+                    {showpassowrd ? (
+                      <BsEyeFill
+                        className="text-xl cursor-pointer"
+                        onClick={() => setShowPassword(!showpassowrd)}
+                      />
+                    ) : (
+                      <BsEyeSlashFill
+                        className="text-xl cursor-pointer"
+                        onClick={() => setShowPassword(!showpassowrd)}
+                      />
+                    )}
+                  </div>
+                </div>
                 <button
                   type="submit"
                   className="w-full flex justify-center items-center bg-blue-600 text-white hover:bg-primary-700 focus:ring-4 focus:outline-none font-medium rounded-lg border border-blue-600 hover:bg-transparent hover:text-blue-600 px-5 py-2 text-center "
@@ -91,7 +133,7 @@ const SignIn = () => {
                   {loading ? (
                     <Oval color="#FFFFFF" height={20} width={20} />
                   ) : (
-                    "Login"
+                    "SignUp"
                   )}
                 </button>
               </form>
@@ -101,6 +143,6 @@ const SignIn = () => {
       </section>
     </>
   );
-};
+}
 
-export default SignIn;
+export default SignUp;

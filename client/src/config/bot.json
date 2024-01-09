@@ -1,0 +1,13 @@
+{
+  "pairs": "BTC/USDT",
+  "baseOrderSize": "20",
+  "safetyOrderSize": "15",
+  "maxSafetyOrder": "10",
+  "safetyOrderDeviation": "1.5",
+  "safetyOrderVolume": "2",
+  "safetyOrderStep": "1",
+  "targetProfit": "5",
+  "orderType": "MARKET",
+  "startCondition": "Open new trade ASAP",
+  "filled": 0
+}

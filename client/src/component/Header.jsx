@@ -82,7 +82,7 @@ const Header = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:8080/api/bot/pair/balance/${coin}`
+        `http://localhost:5000/api/bot/pair/balance/${coin}`
       );
       if (res.status === 200) {
         setLoading(false);
