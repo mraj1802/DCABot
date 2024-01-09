@@ -3,18 +3,20 @@ import React from "react";
 
 // Modal component
 const PreviewOrderModel = ({ isOpen, onClose, submittedData, onModify,calculateData }) => {
-  let deviationExceeded = false;
+  // let deviationExceeded = false;
 
   console.log("calculate data..........",calculateData);
-  // const deviationValues = calculateData.map(entry => entry.deviation);
+ 
 
-  
+  const deviationValues = calculateData.map(entry => parseFloat(entry.deviation));
+  console.log("deviationExceeded status-------",deviationValues);
 
-  // const deviationValues = calculateData.map(entry => parseFloat(entry.deviation));
-  // console.log("deviationExceeded status-------",deviationValues);
+  const deviationExceeded = deviationValues.some(value => value >= 100);
+
+  console.log("deviationExceeded:", deviationExceeded);
   // if (deviationValues.some(value => value >= 100)) {
+  //   console.log("inside the if");
   //   deviationExceeded = true;
-    
   // }
   
 

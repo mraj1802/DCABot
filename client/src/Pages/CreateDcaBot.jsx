@@ -7,13 +7,48 @@ import axios from "axios";
 import "../custom.css";
 
 const CreateDcaBot = () => {
+
+  const initialFormData = {
+    botname: "",
+    pairs: "",
+    baseordersize: "",
+    safetyordersize: "",
+    maxsafetyorder: "",
+    safetyorderdeviation: "",
+    safetyordervolume: "",
+    safetyorderstep: "",
+    targetprofit: "",
+    maxdeals: "",
+    maxpairsdeal: "",
+    minimumvol: "",
+    cooldowndeals: "",
+    ordertype: "MARKET",
+    startCondition: "Open new trade ASAP",
+    // enabled: false,
+  };
+
+  const pairs = [
+    {
+      value: "BTC/USDT",
+      label: "BTC/USDT",
+      icon: <SiBitcoinsv className="text-yellow-500 text-lg" />,
+    },
+    {
+      value: "ETH/USDT",
+      label: "ETH/USDT",
+      icon: <SiEthereum className="text-gray-800 text-lg" />,
+    },
+  ];
   const [ethPrice, setEthPrice] = useState(null);
   const prices = useMemo(() => [], []);
   const amounts = useMemo(() => [], []);
   const qtys = useMemo(() => [], []);
-  let deviationExceeded = false;
   const [calculatedData, setCalculatedData] = useState([]);
-  // const calculatedData = [];
+  const [formData, setFormData] = useState({ ...initialFormData });
+  const [submittedData, setSubmittedData] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPair, setSelectedPair] = useState(pairs[0]);
+ 
 
   const calculatePrice = (deviation, basePrice) => {
     const result = basePrice - basePrice * (deviation / 100);
@@ -97,10 +132,10 @@ const CreateDcaBot = () => {
         index
       );
 
-      if (Deviation >= 100) {
-        deviationExceeded = true;
-        continue;
-      }
+      // if (Deviation >= 100) {
+      //   deviationExceeded = true;
+      //   continue;
+      // }
       const basePrice = ethPrice;
       const price = calculatePrice(Deviation, basePrice);
       prices.push(price);
@@ -196,42 +231,10 @@ const CreateDcaBot = () => {
 
     fetchEthPrice();
     prices.length = 0;
-  }, [prices]);
+  }, [isModalOpen,prices]);
 
-  console.log("calculate data..........", calculatedData);
+  // console.log("calculate data..........", calculatedData);
 
-  // let calculateData =[];
-  const initialFormData = {
-    botname: "",
-    pairs: "",
-    baseordersize: "",
-    safetyordersize: "",
-    maxsafetyorder: "",
-    safetyorderdeviation: "",
-    safetyordervolume: "",
-    safetyorderstep: "",
-    targetprofit: "",
-    maxdeals: "",
-    maxpairsdeal: "",
-    minimumvol: "",
-    cooldowndeals: "",
-    ordertype: "MARKET",
-    startCondition: "Open new trade ASAP",
-    // enabled: false,
-  };
-
-  const pairs = [
-    {
-      value: "BTC/USDT",
-      label: "BTC/USDT",
-      icon: <SiBitcoinsv className="text-yellow-500 text-lg" />,
-    },
-    {
-      value: "ETH/USDT",
-      label: "ETH/USDT",
-      icon: <SiEthereum className="text-gray-800 text-lg" />,
-    },
-  ];
 
   const Option = (props) => (
     <components.Option {...props} className="bg-red-300">
@@ -251,16 +254,13 @@ const CreateDcaBot = () => {
     </components.SingleValue>
   );
 
-  const [formData, setFormData] = useState({ ...initialFormData });
-  const [submittedData, setSubmittedData] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPair, setSelectedPair] = useState(pairs[0]);
-
   const handleChange = (value) => {
     setSelectedPair(value);
   };
 
   const handleInputChange = (e) => {
+    console.log("input--------",e.target.value);
+    console.log("target-------",e.target);
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -277,7 +277,7 @@ const CreateDcaBot = () => {
     );
 
     console.log("Submitted Data:", formData);
-    console.log("Calculated Data:", calculatedData);
+    // console.log("Calculated Data:", calculatedData);
     setCalculatedData(calculatedData);
 
     // setCalculatedData(calculatedData);
