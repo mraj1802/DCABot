@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Oval } from "react-loader-spinner";
 import { BsEyeSlashFill, BsEyeFill } from "react-icons/bs";
+import { Toast, ToastComponent } from "../utils/toast";
 const SignIn = () => {
   const [state, setState] = useState({
     username: "",
@@ -19,19 +20,21 @@ const SignIn = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:5000/api/login", state);
+      const res = await axios.post("http://localhost:8080/api/login", state);
       if (res.status === 200) {
         localStorage.setItem("token", res.data.token);
+        Toast.success(res.data.msg);
         setLoading(false);
-        alert(res.data.msg);
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       } else {
-        alert("logging failed");
+        Toast.error("Login failed.");
         setLoading(false);
       }
     } catch (error) {
       console.log("error in login", error);
-      alert(error.response.data.msg);
+      Toast.error(error.response.data.msg);
       setLoading(false);
     }
   };
@@ -53,19 +56,19 @@ const SignIn = () => {
                     id="username"
                     className="border-b border-b-gray-300 text-gray-900 sm:text-sm focus:outline-none focus:border-black block w-full px-2.5 py-2 "
                     placeholder="Enter username Address"
-                    required=""
+                    required
                     value={state.username}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="relative">
                   <input
-                    type="password"
+                    type={show ? "text" : "password"}
                     name="password"
                     id="password"
                     placeholder="Enter Password"
                     className="border-b border-b-gray-300 text-gray-900 sm:text-sm focus:outline-none focus:border-black block w-full px-2.5 py-2"
-                    required=""
+                    required
                     value={state.password}
                     onChange={handleChange}
                   />
@@ -99,6 +102,7 @@ const SignIn = () => {
           </div>
         </div>
       </section>
+      <ToastComponent />
     </>
   );
 };

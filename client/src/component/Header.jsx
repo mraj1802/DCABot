@@ -46,8 +46,9 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/signin");
-    return;
+    setTimeout(() => {
+      navigate("/signin");
+    }, 2000);
   };
 
   const handleClickOutside = (event) => {
@@ -82,7 +83,7 @@ const Header = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:5000/api/bot/pair/balance/${coin}`
+        `http://localhost:8080/api/bot/pair/balance/${coin}`
       );
       if (res.status === 200) {
         setLoading(false);

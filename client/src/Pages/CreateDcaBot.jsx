@@ -6,6 +6,7 @@ import { SiBitcoinsv } from "react-icons/si";
 import "../custom.css";
 import axios from "axios";
 import bot from "../config/bot.json";
+import { Toast, ToastComponent } from "../utils/toast";
 
 const CreateDcaBot = () => {
   const [ethPrice, setEthPrice] = useState(null);
@@ -303,15 +304,15 @@ const CreateDcaBot = () => {
     };
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:5000/api/bot/create", obj);
+      const res = await axios.post("http://localhost:8080/api/bot/create", obj);
       console.log(res);
       if (res.status === 200) {
+        Toast.success(res.data.msg);
         setLoading(false);
-        alert(res.data.msg);
-        return;
       }
     } catch (error) {
       console.log("error in creating bot", error);
+      Toast.error(error.response.data.msg);
       setLoading(false);
     }
   };
@@ -647,6 +648,7 @@ const CreateDcaBot = () => {
         calculateData={calculatedData}
         loading={loading}
       />
+      <ToastComponent />
     </>
   );
 };

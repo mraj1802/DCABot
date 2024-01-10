@@ -3,6 +3,7 @@ import { Oval } from "react-loader-spinner";
 import { BsEyeSlashFill, BsEyeFill } from "react-icons/bs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Toast, ToastComponent } from "../utils/toast";
 function SignUp() {
   const [state, setState] = useState({
     username: "",
@@ -23,20 +24,21 @@ function SignUp() {
     try {
       if (state.password === state.confirmPassword) {
         setLoading(true);
-        const res = await axios.post("http://localhost:5000/api/signup", state);
+        const res = await axios.post("http://localhost:8080/api/signup", state);
         if (res.status === 200) {
+          Toast.success(res.data.msg);
           setLoading(false);
-          alert(res.data.msg);
-          navigate("/signin");
-          return;
+          setTimeout(() => {
+            navigate("/signin");
+          }, 2000);
         }
       } else {
-        alert("Password Not Matched.");
+        Toast.error("Password Not Matched.");
         setLoading(false);
       }
     } catch (error) {
       console.log("error in signUp.", error);
-      alert(error.response.data.msg);
+      Toast.error(error.response.data.msg);
       setLoading(false);
     }
   };
@@ -141,6 +143,7 @@ function SignUp() {
           </div>
         </div>
       </section>
+      <ToastComponent />
     </>
   );
 }
