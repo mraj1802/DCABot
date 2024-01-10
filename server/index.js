@@ -19,7 +19,8 @@ mongoose.set("strictQuery", false);
 app.use("/api", traderRouter);
 app.use("/api/bot", botRouter);
 
-await connectDB();
+connectDB();
+
 const server = app.listen(PORT, () => {
   console.log(`server connected at the port ${PORT}`);
 });

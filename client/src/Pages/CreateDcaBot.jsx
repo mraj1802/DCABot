@@ -8,6 +8,19 @@ import "../custom.css";
 
 const CreateDcaBot = () => {
 
+  const pair = [
+    {
+      value: "BTC/USDT",
+      label: "BTC/USDT",
+      icon: <SiBitcoinsv className="text-yellow-500 text-lg" />,
+    },
+    {
+      value: "ETH/USDT",
+      label: "ETH/USDT",
+      icon: <SiEthereum className="text-gray-800 text-lg" />,
+    },
+  ];
+
   const initialFormData = {
     botName: "",
     pair: "",
@@ -25,19 +38,6 @@ const CreateDcaBot = () => {
   const [submittedData, setSubmittedData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPair, setSelectedPair] = useState(pair[0]);
-
-  const pair = [
-    {
-      value: "BTC/USDT",
-      label: "BTC/USDT",
-      icon: <SiBitcoinsv className="text-yellow-500 text-lg" />,
-    },
-    {
-      value: "ETH/USDT",
-      label: "ETH/USDT",
-      icon: <SiEthereum className="text-gray-800 text-lg" />,
-    },
-  ];
 
   const Option = (props) => (
       <components.Option {...props} className="bg-red-300">
