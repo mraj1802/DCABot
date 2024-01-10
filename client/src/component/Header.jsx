@@ -47,8 +47,9 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/signin");
-    return;
+    setTimeout(() => {
+      navigate("/signin");
+    }, 2000);
   };
 
   const handleClickOutside = (event) => {

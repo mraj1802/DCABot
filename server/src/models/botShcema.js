@@ -17,5 +17,3 @@ const BotSchema = new Schema(
 
 const BotModel = model("Bot", BotSchema);
 module.exports = BotModel;
-
-// expiresAt: { type: Date, default: Date.now, expires: "1m" }, // Set the expiration time (e.g., 5 minutes)

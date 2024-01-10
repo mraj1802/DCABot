@@ -4,7 +4,6 @@ import { IoHomeSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const ManageBots = () => {
-  
   const botsData = [
     {
       name: "Test",
@@ -51,7 +50,6 @@ const ManageBots = () => {
       sandbox: "NO",
       active: true,
     },
-    
   ];
 
   return (
@@ -92,22 +90,25 @@ const ManageBots = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 mx-5">
               {botsData.map((bot, index) => (
-                <div key={index} className="block max-w-[18rem] rounded-lg border border-success bg-transparent shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:border-success-300 dark:bg-neutral-600">
+                <div
+                  key={index}
+                  className="block max-w-[18rem] rounded-lg border border-success bg-transparent shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:border-success-300 dark:bg-neutral-600"
+                >
                   <div className="border-b-2 border-success px-6 py-3 text-neutral-600 dark:border-success-300 dark:text-neutral-50">
-                  <h2 className="text-xl font-medium">{bot.name}</h2>
+                    <h2 className="text-xl font-medium">{bot.name}</h2>
                   </div>
                   <div className="p-5">
                     <div className="flex justify-between p-2">
-                          <span>Symbol</span>
-                          <p className="text-end">{bot.pair}</p>
+                      <span>Symbol</span>
+                      <p className="text-end">{bot.pair}</p>
                     </div>
                     <div className="flex justify-between p-2">
-                          <span>Amount</span>
-                          <p className="text-end">{bot.volumeScale} USD</p>
+                      <span>Amount</span>
+                      <p className="text-end">{bot.volumeScale} USD</p>
                     </div>
                     <div className="flex justify-between p-2">
-                          <span>Close traders</span>
-                          <p className="text-end">$9.07</p>
+                      <span>Close traders</span>
+                      <p className="text-end">$9.07</p>
                     </div>
                   </div>
                   {/* <div className=" border-success px-6 py-3 text-neutral-600 dark:border-success-300 dark:text-neutral-50">
@@ -120,16 +121,11 @@ const ManageBots = () => {
                   </div> */}
 
                   <div className="text-center">
-  <div className="inline-block border-t border-success mx-4 px-4 py-3 text-neutral-600 dark:border-success-300 dark:text-neutral-50"></div>
-  <span className="inline-block px-4 ">CENTER</span>
-  <div className="inline-block border-t border-success  px-4 py-3 text-neutral-600 dark:border-success-300 dark:text-neutral-50"></div>
-  
-</div>
+                    <div className="inline-block border-t border-success mx-4 px-4 py-3 text-neutral-600 dark:border-success-300 dark:text-neutral-50"></div>
+                    <span className="inline-block px-4 ">CENTER</span>
+                    <div className="inline-block border-t border-success  px-4 py-3 text-neutral-600 dark:border-success-300 dark:text-neutral-50"></div>
+                  </div>
 
-
-                  
-
-                 
                   {/* <p>Pair: {bot.pair}</p>
                   <p>Bo: {bot.bo}</p>
                   <p>So: {bot.so}</p>
@@ -148,9 +144,7 @@ const ManageBots = () => {
                       checked={bot.active}
                     />
                   </label> */}
-                </div>   
-
-
+                </div>
               ))}
             </div>
           </div>
@@ -161,4 +155,3 @@ const ManageBots = () => {
 };
 
 export default ManageBots;
-
