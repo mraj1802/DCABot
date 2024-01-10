@@ -22,7 +22,8 @@ const Sidebar = ({ token }) => {
 
   return (
     <div className="w-[15%] 2xl:w-[16%] xl:w-[20%] lg:w-[20%] md:w-[25%] fixed border-r border-gray-200  h-full py-3">
-      <div className="flex flex-col items-center py-2">
+      <Link to="/">
+      <div className="flex flex-col items-center py-2" >
         <img
           src="/android-chrome-256x256.png"
           alt=""
@@ -30,6 +31,8 @@ const Sidebar = ({ token }) => {
         />
         <h1 className="text-3xl font-bold">cornix</h1>
       </div>
+      </Link>
+     
       <div className="flex flex-col gap-4 py-5 w-[100%]">
         <Link
           to="/"

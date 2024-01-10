@@ -103,7 +103,7 @@ const Header = () => {
   return (
     <div className="border-b border-gray-200 flex justify-end items-center py-3 px-10">
       <div className="flex  items-center gap-3">
-        <div className="z-50 relative w-[160px]" ref={dropdownRef}>
+        <div className="z-10 relative w-[160px]" ref={dropdownRef}>
           <button
             className="w-full flex justify-between gap-3 items-center  px-4 font-medium  text-black rounded-md text-base"
             onClick={handleDropdown}
