@@ -22,7 +22,7 @@ mongoose.set("strictQuery", false);
 app.use("/api", traderRouter);
 app.use("/api/bot", botRouter);
 
-cron.schedule("* * * * * *", async () => {
+cron.schedule("* * * * * * *", async () => {
   try {
     //watchDog();
     //sellWatchDog();
