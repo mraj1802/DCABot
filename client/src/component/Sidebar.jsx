@@ -16,8 +16,8 @@ const Sidebar = ({ token }) => {
 
   const linkStyle = (pathname) => {
     return isActive(pathname)
-      ? "bg-blue-100 border-r-2 border-blue-700 text-blue-600"
-      : "";
+      ? "bg-blue-100 border-r-2  border-blue-700 text-blue-600"
+      : " border-r-2 border-white";
   };
 
   return (
@@ -33,10 +33,10 @@ const Sidebar = ({ token }) => {
       </div>
       </Link>
      
-      <div className="flex flex-col gap-4 py-5 w-[100%]">
+      <div className="flex flex-col gap-4 py-5 ">
         <Link
           to="/"
-          className={`flex gap-2 items-center text-[15px] font-medium text-gray-800 hover:text-blue-500 py-3 px-6 ${linkStyle(
+          className={`flex gap-2 items-center text-[15px] font-medium text-gray-800   hover:text-blue-500 py-3 px-6 ${linkStyle(
             "/"
           )}`}
         >
@@ -47,7 +47,7 @@ const Sidebar = ({ token }) => {
         </Link>
         <Link
           to="/managebot"
-          className={`flex gap-2 items-center text-[15px] font-medium text-gray-800 hover:text-blue-500 py-3 px-6 ${linkStyle(
+          className={`flex gap-2 items-center text-[15px] font-medium text-gray-800   hover:text-blue-500 py-3 px-6 ${linkStyle(
             "/managebot"
           )}`}
         >
@@ -68,7 +68,7 @@ const Sidebar = ({ token }) => {
           Active DCA Bot Deals
         </Link>
         <Link
-          to="/hisotry"
+          to="/history"
           className={`flex gap-2 items-center text-[15px] font-medium text-gray-800 hover:text-blue-500 py-3 px-6 ${linkStyle(
             "/history"
           )}`}

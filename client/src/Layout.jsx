@@ -13,10 +13,12 @@ const Layout = ({ children, token }) => {
             </div>
           )}
 
-          <div className="w-full 2xl:w-[100%] xl:w-[80%] lg:w-[80%] md:w-[75%]">
+          <div className="w-full 2xl:w-[84%] xl:w-[80%] lg:w-[80%] md:w-[75%]">
             {token && <Header token={token} />}
+            <div className="mt-20">
 
             {children}
+            </div>
           </div>
         </div>
       </div>
