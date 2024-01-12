@@ -103,7 +103,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="border-b border-gray-200 flex justify-end items-center py-3 px-10">
+      <div className="fixed w-full 2xl:w-[84%] xl:w-[80%] lg:w-[80%] md:w-[75%]z-20 bg-white border-b border-gray-200 flex justify-end items-center py-3 px-10">
         <div className="flex  items-center gap-3">
           <div className="z-10 relative w-[160px]" ref={dropdownRef}>
             <button
@@ -115,11 +115,13 @@ const Header = () => {
                   <span>{coinData[selectedValue].icon}</span>
                   {coin}
                 </div>
-                <div className="text-center text-lg">
+                <div className="text-center text-base">
                   {loading ? (
-                    <Oval color="black" height={20} width={20} />
-                  ) : (
+                    <Oval color="black" height={24} width={20} />
+                  ) : balance ? (
                     `${balance?.free?.toFixed(4)}`
+                  ) : (
+                    "0.0000"
                   )}
                 </div>
               </div>
@@ -130,7 +132,7 @@ const Header = () => {
 
             {isDropdown && (
               <>
-                <div className="absolute bg-white z-50 top-14 right-0 left-0  p-2 py-3 px-2  border border-gray-200 shadow-xl rounded-md text-black font-normal">
+                <div className="absolute bg-white z-50 top-16 right-0 left-0  p-2 py-3 px-2  border border-gray-200 shadow-xl rounded-md text-black font-normal">
                   <ul className="flex flex-col gap-3 cursor-pointer px-2">
                     {coinData.map((item, index) => (
                       <>

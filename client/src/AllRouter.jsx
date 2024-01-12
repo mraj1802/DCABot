@@ -17,7 +17,7 @@ const AllRouter = () => {
       <Route path="/signin" element={<SignIn />} />
       <Route path="/managebot" element={<ManageBots />} />
       <Route path="/activebot" element={<ActiveBot />} />
-      <Route path="/bothistory" element={<BotHistory />} />
+      <Route path="/history" element={<BotHistory />} />
       <Route path="/conf" element={<Configuration />} />
       <Route path="/logs" element={<Logs />} />
       <Route path="/logs/livelogs" element={<LiveLogs />} />
