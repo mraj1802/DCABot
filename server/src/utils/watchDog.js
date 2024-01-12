@@ -1,29 +1,36 @@
 const { FetchOrderDetails } = require("../API/marketAPI");
 const BotModel = require("../models/botShcema");
+const DealModel = require("../models/dealSchema");
 
 const watchDog = async () => {
   try {
     const bots = await BotModel.find({ active: true });
     for (let bot of bots) {
-      console.log("bot", bot);
       if (bot.orders.length > 0) {
         const data = bot.orders.filter((el) => el.filled !== 1);
         console.log("bots", data);
-        if (data !== null || data !== undefined) {
-          const result = await FetchOrderDetails(
-            bot.exchange,
-            data.orderID,
-            bot.config["pairs"]
-          );
-          if (result.status === "filled" && result.id === data.orderID) {
-            await BotModel.updateOne(
-              { _id: bot._id, "orders.orderNo": bot.orders.orderNo },
-              { $set: { "orders.$.filled": 1 } }
+        if (data.length > 0) {
+          for (let obj of data) {
+            const result = await FetchOrderDetails(
+              obj.orderID,
+              bot.config["pair"]
             );
-            console.log("result...", result);
+            if (result.status === "closed" && result.id === obj.orderID) {
+              await BotModel.updateOne(
+                { _id: bot._id, "orders.orderID": result.id },
+                { $set: { "orders.$.filled": 1 } }
+              );
+              await DealModel.updateOne(
+                { dealId: bot.dealId, "orders.orderID": result.id },
+                { $set: { "orders.$.filled": 1 } }
+              );
+              console.log(
+                "result................................................."
+              );
+            }
           }
         }
-        console.log("data not present");
+        console.log("data restart again after sometime.");
       }
     }
   } catch (error) {

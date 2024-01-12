@@ -8,6 +8,5 @@
   "safetyOrderStep": "1",
   "targetProfit": "5",
   "orderType": "MARKET",
-  "startCondition": "Open new trade ASAP",
-  "filled": 0
+  "startCondition": "Open new trade ASAP"
 }

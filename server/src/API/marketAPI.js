@@ -1,6 +1,7 @@
 const exchange = require("../config/exchange");
+
 //fetched balance .
-const FetchBalance = async (exchange, coin) => {
+const FetchBalance = async (coin) => {
   try {
     const ex = await exchange.fetchBalance();
     const balance = ex[coin];
@@ -11,9 +12,9 @@ const FetchBalance = async (exchange, coin) => {
 };
 
 //fetched order details.
-const FetchOrderDetails = async (exchange, id, symbol) => {
-  console.log("data...", exchange, id, symbol);
+const FetchOrderDetails = async (id, symbol) => {
   try {
+    console.log("order...", id, symbol);
     const orderDetails = await exchange.fetchOrder(id, symbol);
     return orderDetails;
   } catch (error) {
@@ -21,7 +22,7 @@ const FetchOrderDetails = async (exchange, id, symbol) => {
   }
 };
 
-const MarketLoader = async (exchange) => {
+const MarketLoader = async () => {
   try {
     const loadexchange = await exchange.loadMarkets();
     if (loadexchange) {
@@ -33,7 +34,7 @@ const MarketLoader = async (exchange) => {
 };
 
 //fetched real price of pairs.
-const MarketTrigger = async (exchange, pairs) => {
+const MarketTrigger = async (pairs) => {
   try {
     let tigger = await exchange.fetchTicker(pairs);
     let latestPrice = tigger.last;
@@ -43,14 +44,7 @@ const MarketTrigger = async (exchange, pairs) => {
   }
 };
 
-const CreateOrdersLimit = async (
-  exchange,
-  symbol,
-  orderType,
-  side,
-  amount,
-  price
-) => {
+const CreateOrdersLimit = async (symbol, orderType, side, amount, price) => {
   try {
     console.log("order", symbol, orderType, side, amount, price);
     const order = await exchange.createOrder(
@@ -68,13 +62,7 @@ const CreateOrdersLimit = async (
   }
 };
 
-const CreateOrdersMarket = async (
-  exchange,
-  symbol,
-  orderType,
-  side,
-  amount
-) => {
+const CreateOrdersMarket = async (symbol, orderType, side, amount) => {
   try {
     console.log("order", symbol, orderType, side, amount);
     const order = await exchange.createOrder(symbol, orderType, side, amount);
@@ -85,14 +73,27 @@ const CreateOrdersMarket = async (
   }
 };
 
-const CancelOrders = async () => {};
-
-const SellOrders = async (qty, price) => {
+const CancelOrders = async (orderID, symbol) => {
+  console.log("cancel...", orderID, symbol);
   try {
-    console.log("qty, price", qty, price);
-    const ex = await exchange.fetchBalance();
+    const deleted = await exchange.cancelOrder(orderID, symbol);
+    console.log("deleted api", deleted);
+    if (deleted !== undefined || deleted !== null) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("Error in deleting orders:", error.message);
+    throw error;
+  }
+};
+
+const SellOrders = async (pair, qty, price) => {
+  try {
+    console.log("qty,pair, price", pair, qty, price);
+    // const ex = await exchange.fetchBalance();
     const order = await exchange.createOrder(pair, "limit", "sell", qty, price);
-    console.log("ex...", ex.USDT);
+    // console.log("ex...", ex.USDT);
     console.log("order...", order);
     return order;
   } catch (error) {
@@ -109,4 +110,5 @@ module.exports = {
   CreateOrdersMarket,
   CreateOrdersLimit,
   SellOrders,
+  CancelOrders,
 };

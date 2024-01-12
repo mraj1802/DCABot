@@ -2,10 +2,18 @@ const {
   FetchBalance,
   CreateOrdersLimit,
   CreateOrdersMarket,
+  CancelOrders,
 } = require("../API/marketAPI");
 const BotModel = require("../models/botShcema");
 const exchange = require("../config/exchange");
-
+const {
+  calculateAverage,
+  calculateAmount,
+  calculateSumAmount,
+  calculateSumQty,
+} = require("../utils/calculation");
+const DealModel = require("../models/dealSchema");
+const { v4: uuidv4 } = require("uuid");
 //it will activate Test modes
 exchange.setSandboxMode(true);
 
@@ -18,47 +26,65 @@ const createBot = async (req, res) => {
     const newBot = new BotModel({
       config,
       orders,
+      dealId: uuidv4(),
     });
     await newBot.save();
     return res.status(200).send({ msg: "Bot created successfully." });
   } catch (error) {
     console.log("Error in creating bot", error.message);
-    return res.status(500).send({ data: "Error in creating bot." });
+    return res.status(500).send({ msg: "Error in creating bot." });
   }
 };
 
 const startBot = async (req, res) => {
   const { id } = req.params;
   let side = "buy";
-  //let updatedOrders = [];
+  let dealsData;
   try {
     const botStart = await BotModel.findOneAndUpdate(
       { _id: id },
       { $set: { active: true } },
       { new: true }
     );
+
+    //here we saved selling collection when bot start.
+    const deals = await DealModel.findOne({ dealId: botStart["dealId"] });
+    if (!deals) {
+      const newDeals = new DealModel({
+        active: botStart["active"],
+        config: botStart["config"],
+        orders: botStart["orders"],
+        dealId: botStart["dealId"],
+        exchange: botStart["exchange"],
+        isStart: true,
+      });
+      dealsData = await newDeals.save();
+    }
+    console.log("dealdata........", dealsData);
+
     if (!botStart) {
       return res
         .status(401)
         .json({ msg: "Error in bot start.", data: botStart });
     }
+    console.log("botStart.config", botStart.config["type"]);
     if (
-      botStart.config["ordertype"] === "Limit" ||
-      botStart.config["ordertype"] === "limit"
+      botStart.config["type"] === "LIMIT" ||
+      botStart.config["type"] === "limit"
     ) {
+      console.log("inside the limit for loop.");
       for (let i = 0; i < botStart.orders.length; i++) {
         let order = botStart.orders[i];
         let amount = parseFloat(order.qty);
         let price = parseFloat(order.price);
         const orders = await CreateOrdersLimit(
-          exchange,
-          botStart.config["pairs"],
+          botStart.config["pair"],
           "limit",
           side,
           amount,
           price
         );
-        console.log("order id if........................", orders.id);
+        console.log("order limit id if........................", orders.id);
         if (orders && orders.id) {
           const updatedOrders = [...botStart.orders];
           updatedOrders[i].orderID = orders.id;
@@ -68,17 +94,22 @@ const startBot = async (req, res) => {
             { _id: botStart._id },
             { $set: { orders: updatedOrders } }
           );
+          await DealModel.updateOne(
+            { _id: dealsData._id },
+            { $set: { orders: updatedOrders } }
+          );
         }
       }
     } else {
+      console.log("inside the market for loop.");
+
       for (let i = 0; i < botStart.orders.length; i++) {
         let order = botStart.orders[i];
         let amount = parseFloat(order.qty);
         let price = parseFloat(order.price);
         if (i === 0) {
           const orders = await CreateOrdersMarket(
-            exchange,
-            botStart.config["pairs"],
+            botStart.config["pair"],
             "market",
             side,
             amount
@@ -93,11 +124,14 @@ const startBot = async (req, res) => {
               { _id: botStart._id },
               { $set: { orders: updatedOrders } }
             );
+            await DealModel.updateOne(
+              { _id: dealsData._id },
+              { $set: { orders: updatedOrders } }
+            );
           }
         } else {
           const orders = await CreateOrdersLimit(
-            exchange,
-            botStart.config["pairs"],
+            botStart.config["pair"],
             "limit",
             side,
             amount,
@@ -113,6 +147,10 @@ const startBot = async (req, res) => {
               { _id: botStart._id },
               { $set: { orders: updatedOrders } }
             );
+            await DealModel.updateOne(
+              { _id: dealsData._id },
+              { $set: { orders: updatedOrders } }
+            );
           }
         }
       }
@@ -120,7 +158,7 @@ const startBot = async (req, res) => {
     return res.status(200).json({ msg: "Bot started Successfully." });
   } catch (error) {
     console.log("Error in startBot bot", error.message);
-    return res.status(500).send({ data: "Error in startBot bot." });
+    return res.status(500).send({ msg: "Error in startBot bot." });
   }
 };
 
@@ -128,7 +166,7 @@ const getBalance = async (req, res) => {
   const { coin } = req.params;
   try {
     if (coin) {
-      const x = await FetchBalance(exchange, coin);
+      const x = await FetchBalance(coin);
       return res
         .status(200)
         .send({ msg: "balance fetched successfully.", balance: x });
@@ -147,10 +185,10 @@ const getAllBot = async (req, res) => {
         .status(200)
         .send({ msg: "Bot fetched successfully.", data: AllBot });
     }
-    return res.status(401).send({ mgs: "Bot not present." });
+    return res.status(401).send({ msg: "Bot not present." });
   } catch (error) {
     console.log("Error in getting all bot", error);
-    return res.status(401).send({ mgs: "Error in getting all bot." });
+    return res.status(401).send({ msg: "Error in getting all bot." });
   }
 };
 
@@ -169,82 +207,85 @@ const getActiveBot = async (req, res) => {
   }
 };
 
+const deleteBot = async (req, res) => {
+  const { id } = req.params;
+  console.log("id", id);
+  try {
+    const deletedBot = await BotModel.findById(id);
+
+    if (!deletedBot) {
+      return res.status(404).json({ msg: "Bot not found." });
+    }
+
+    let success = true;
+
+    for (let i = 0; i < deletedBot.orders.length; i++) {
+      let order = deletedBot.orders[i];
+
+      if (order.filled !== 1) {
+        const result = await CancelOrders(
+          order.orderID,
+          deletedBot.config.pair
+        );
+
+        if (!result) {
+          success = false;
+          console.log("Failed to cancel order:", order.orderID);
+        }
+      }
+    }
+
+    if (success) {
+      await BotModel.findByIdAndDelete(id);
+      return res.status(200).json({ msg: "Bot deleted successfully." });
+    } else {
+      return res.status(500).json({ msg: "Error in deleting orders." });
+    }
+  } catch (error) {
+    console.log("Error in delete bot.", error);
+    return res.status(500).json({ msg: "Error in delete bot." });
+  }
+};
+
 const disableBot = async (req, res) => {
   // Your logic for disabling bot goes here
 };
 
 const getOrder = async (req, res) => {
-  console.log("in getOrders", req.body);
+  const {
+    botName,
+    pair,
+    maxSafetyOrd,
+    priceDeviation,
+    targetProfit,
+    safetyOrd,
+    safetyOrderStep,
+    baseOrder,
+    type,
+    startCondition,
+  } = req.body;
+
   let prices = [];
   let amounts = [];
   let qtys = [];
   let calculatedData = [];
   try {
     let data = {
-      botName: req.body.botName,
-      pair: req.body.pair,
-      maxSafetyOrd: req.body.maxSafetyOrd,
-      deviation: req.body.priceDeviation,
-      targetProfit: req.body.targetProfit,
-      safetyOrder: req.body.safetyOrd,
-      volume: req.body.volume,
-      baseOrder: req.body.baseOrder,
-      type:req.body.type,
-      condition: req.body.condition
+      botName: botName,
+      pair: pair,
+      maxSafetyOrd: maxSafetyOrd,
+      deviation: priceDeviation,
+      targetProfit: targetProfit,
+      safetyOrder: safetyOrd,
+      volume: safetyOrderStep,
+      baseOrder: baseOrder,
+      type: type,
+      condition: startCondition,
     };
 
-    // const ticker = await exchange.fetchTicker(data.pair);
-    // let basePrice = ticker.last;
-
-    let basePrice = 2000;
-    console.log("basePrice", basePrice)
-
-    const calculateAverage = (prices) => {
-      let sum = 0;
-      const averages = prices.map((price, index) => {
-        const numericPrice = parseFloat(price);
-        sum += numericPrice;
-        return sum / (index + 1);
-      });
-      return isNaN(averages[averages.length - 1])
-          ? "0.00"
-          : averages[averages.length - 1].toFixed(2);
-    };
-
-    const calculateAmount = (safetyOrder, volume, index) => {
-      let result = safetyOrder * volume;
-      for (let i = 1; i <= index - 2; i++) {
-        result *= volume;
-      }
-      return result;
-    };
-
-    const calculateSumAmount = (
-        amounts,
-        currentIndex,
-        baseOrder,
-        safetyOrder
-    ) => {
-      let sum = 0;
-      for (let i = 2; i <= currentIndex; i++) {
-        const numericAmount = parseFloat(amounts[i]);
-        const previousAdd = parseFloat(baseOrder) + parseFloat(safetyOrder);
-        sum += i === 2 ? numericAmount + previousAdd : numericAmount;
-      }
-      return sum.toFixed(2);
-    };
-
-    const calculateSumQty = (qtys, index, baseOrder, safetyOrder, price) => {
-      let sum = 0;
-      for (let i = 2; i <= index; i++) {
-        const numericQty = parseFloat(qtys[i].toFixed(5));
-        const previousAdd =
-            baseOrder / (price + safetyOrder) / price.toFixed(5);
-        sum +=
-            i === 2 ? parseFloat(parseFloat(numericQty) + parseFloat(previousAdd)) : parseFloat(numericQty);
-      }
-      return sum;
-    };
+    const ticker = await exchange.fetchTicker(data.pair);
+    let basePrice = ticker.last;
+    console.log("basePrice", basePrice);
 
     for (let index = 0; index < data.maxSafetyOrd; index++) {
       let Deviation = data.deviation * index;
@@ -255,22 +296,20 @@ const getOrder = async (req, res) => {
       const amount = calculateAmount(data.safetyOrder, data.volume, index);
       amounts.push(amount);
 
-      console.log("both", amount, price)
-
       const qty = amount / price;
       qtys.push(qty);
       const sumAmount = calculateSumAmount(
-          amounts,
-          index,
-          data.baseOrder,
-          data.safetyOrder
+        amounts,
+        index,
+        data.baseOrder,
+        data.safetyOrder
       );
       const sumQty = calculateSumQty(
-          qtys,
-          index,
-          data.baseOrder,
-          data.safetyOrder,
-          price
+        qtys,
+        index,
+        data.baseOrder,
+        data.safetyOrder,
+        price
       );
       const dataEntry = {
         no: index === 0 ? "Base Order" : index,
@@ -279,35 +318,38 @@ const getOrder = async (req, res) => {
         average: average,
         target: target,
         qty: `${
-            index === 0
-                ? (parseFloat(data.baseOrder) / price).toFixed(5)
-                : index === 1
-                    ? (parseFloat(data.safetyOrder) / price).toFixed(5)
-                    : parseFloat(qty).toFixed(5)
+          index === 0
+            ? (parseFloat(data.baseOrder) / price).toFixed(5)
+            : index === 1
+            ? (parseFloat(data.safetyOrder) / price).toFixed(5)
+            : parseFloat(qty).toFixed(5)
         }`,
         amount: `${
-            index === 0
-                ? parseFloat(data.baseOrder).toFixed(2)
-                : index === 1
-                    ? parseFloat(data.safetyOrder).toFixed(2)
-                    : amount.toFixed(2)
+          index === 0
+            ? parseFloat(data.baseOrder).toFixed(2)
+            : index === 1
+            ? parseFloat(data.safetyOrder).toFixed(2)
+            : amount.toFixed(2)
         }`,
         sumQty: `${
-            index === 0
-                ? (parseFloat(data.baseOrder) / price).toFixed(5)
-                : index === 1
-                    ? data.baseOrder / price +
-                    parseFloat(data.safetyOrder) / price.toFixed(5)
-                    : sumQty.toFixed(5)
+          index === 0
+            ? (parseFloat(data.baseOrder) / price).toFixed(5)
+            : index === 1
+            ? data.baseOrder / price +
+              parseFloat(data.safetyOrder) / price.toFixed(5)
+            : sumQty.toFixed(5)
         }`,
         sumAmount: `${
-            index === 0
-                ? parseFloat(data.baseOrder).toFixed(2)
-                : index === 1
-                    ? parseFloat(data.baseOrder + parseFloat(data.safetyOrder)).toFixed(2)
-                    : parseFloat(sumAmount).toFixed(2)
+          index === 0
+            ? parseFloat(data.baseOrder).toFixed(2)
+            : index === 1
+            ? (
+                parseFloat(data.baseOrder) + parseFloat(data.safetyOrder)
+              ).toFixed(2)
+            : parseFloat(sumAmount).toFixed(2)
         }`,
         type: data.type,
+        filled: 0,
       };
       calculatedData.push(dataEntry);
     }
@@ -320,6 +362,15 @@ const getOrder = async (req, res) => {
       error: err,
     });
   }
-}
+};
 
-module.exports = { createBot, disableBot, getBalance, getAllBot, getActiveBot, getOrder, startBot};
+module.exports = {
+  createBot,
+  disableBot,
+  getBalance,
+  getAllBot,
+  getActiveBot,
+  getOrder,
+  startBot,
+  deleteBot,
+};

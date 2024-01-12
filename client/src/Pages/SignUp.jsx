@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Oval } from "react-loader-spinner";
 import { BsEyeSlashFill, BsEyeFill } from "react-icons/bs";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Toast, ToastComponent } from "../utils/toast";
 function SignUp() {
   const [state, setState] = useState({
@@ -45,13 +45,13 @@ function SignUp() {
 
   return (
     <>
-      <section className=" 2xl:py-36 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8">
-        <div className="flex flex-col items-center px-2 py-2 mx-auto lg:py-0">
-          <div className="2xl:w-[30%] xl:w-[40%] lg:w-[55%] md:w-[70%] sm:w-[95%] border border-gray-300 rounded-lg shadow-xl  md:mt-0  xl:p-0 text-black">
+      <section className="flex justify-center h-screen items-center 2xl:py-36 xl:py-12 lg:py-14 md:py-12 dsm:py-10 sm:py-8">
+        <div className="w-full flex flex-col items-center px-2 py-2 mx-auto lg:py-0">
+          <div className="2xl:w-[26%] xl:w-[40%] lg:w-[55%] md:w-[70%] sm:w-[95%] border border-gray-300 rounded-lg shadow-xl  md:mt-0  xl:p-0 text-black">
             <div className="px-14 py-10">
               <form
                 action="#"
-                className="flex flex-col gap-6"
+                className="flex flex-col gap-4"
                 onSubmit={handleSubmit}
               >
                 <div>
@@ -130,7 +130,7 @@ function SignUp() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full flex justify-center items-center bg-blue-600 text-white hover:bg-primary-700 focus:ring-4 focus:outline-none font-medium rounded-lg border border-blue-600 hover:bg-transparent hover:text-blue-600 px-5 py-2 text-center "
+                  className="w-full mt-2 flex justify-center items-center bg-blue-600 text-white hover:bg-primary-700 focus:ring-4 focus:outline-none font-medium rounded-lg border border-blue-600 hover:bg-transparent hover:text-blue-600 px-5 py-2 text-center "
                 >
                   {loading ? (
                     <Oval color="#FFFFFF" height={20} width={20} />
@@ -138,6 +138,13 @@ function SignUp() {
                     "SignUp"
                   )}
                 </button>
+                <div className="w-[80%] m-auto text-left">
+                  If You have already account{" "}
+                  <Link to={"/signin"} className="text-blue-500">
+                    {" "}
+                    click here.
+                  </Link>
+                </div>
               </form>
             </div>
           </div>

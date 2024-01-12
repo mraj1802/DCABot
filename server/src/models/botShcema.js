@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 const BotSchema = new Schema(
   {
     active: { type: Boolean, default: false },
-    // botName: { type: String, required: true },
+    dealId: { type: String, unique: true },
     config: Object,
     orders: Object,
     date: { type: Date, default: Date.now() },

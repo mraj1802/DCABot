@@ -5,7 +5,8 @@ const {
   getAllBot,
   getActiveBot,
   startBot,
-  getOrder
+  getOrder,
+  deleteBot,
 } = require("../controllers/botController");
 const router = express.Router();
 
@@ -15,5 +16,6 @@ router.get("/all", getAllBot);
 router.get("/all/active", getActiveBot);
 router.get("/start/:id", startBot);
 router.post("/orderlist", getOrder);
+router.delete("/delete/:id", deleteBot);
 
 module.exports = router;

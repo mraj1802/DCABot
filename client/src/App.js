@@ -10,10 +10,10 @@ function App() {
     if (!token) {
       navigate("/signin");
     }
-  }, [token, navigate]);
+  }, [token]);
   return (
     <Layout token={token}>
-      <AllRouter  />
+      <AllRouter />
     </Layout>
   );
 }

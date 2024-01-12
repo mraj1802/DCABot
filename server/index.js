@@ -12,7 +12,7 @@ const watchDog = require("./src/utils/watchDog");
 const sellWatchDog = require("./src/utils/sellWatchDog");
 const PORT = 8080 || process.env.PORT;
 const app = express();
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -24,9 +24,8 @@ app.use("/api/bot", botRouter);
 
 cron.schedule("* * * * *", async () => {
   try {
-    //sellWatchDog()
-    //watchDog();
-    //console.log("Cron job executed successfully.");
+    watchDog();
+    sellWatchDog();
   } catch (error) {
     console.error("Error in cron job method:", error);
   }

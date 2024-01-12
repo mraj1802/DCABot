@@ -8,7 +8,7 @@ import { SiEthereum } from "react-icons/si";
 import { SiBitcoinsv } from "react-icons/si";
 import { Oval } from "react-loader-spinner";
 import axios from "axios";
-
+import { Toast, ToastComponent } from "../utils/toast";
 
 const Header = () => {
   const coinData = [
@@ -47,6 +47,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    Toast.success("LogOut Sucessfully.");
     setTimeout(() => {
       navigate("/signin");
     }, 2000);
@@ -101,80 +102,83 @@ const Header = () => {
   }, [coin]);
 
   return (
-    <div className="border-b border-gray-200 flex justify-end items-center py-3 px-10">
-      <div className="flex  items-center gap-3">
-        <div className="z-10 relative w-[160px]" ref={dropdownRef}>
-          <button
-            className="w-full flex justify-between gap-3 items-center  px-4 font-medium  text-black rounded-md text-base"
-            onClick={handleDropdown}
-          >
-            <div className="w-full flex flex-col text-[12px] justify-center items-center">
-              <div className="flex items-center gap-2 text-lg mr-1">
-                <span>{coinData[selectedValue].icon}</span>
-                {coin}
+    <>
+      <div className="border-b border-gray-200 flex justify-end items-center py-3 px-10">
+        <div className="flex  items-center gap-3">
+          <div className="z-10 relative w-[160px]" ref={dropdownRef}>
+            <button
+              className="w-full flex justify-between gap-3 items-center  px-4 font-medium  text-black rounded-md text-base"
+              onClick={handleDropdown}
+            >
+              <div className="w-full flex flex-col text-[12px] justify-center items-center">
+                <div className="flex items-center gap-2 text-lg mr-1">
+                  <span>{coinData[selectedValue].icon}</span>
+                  {coin}
+                </div>
+                <div className="text-center text-lg">
+                  {loading ? (
+                    <Oval color="black" height={20} width={20} />
+                  ) : (
+                    `${balance?.free?.toFixed(4)}`
+                  )}
+                </div>
               </div>
-              <div className="text-center text-lg">
-                {loading ? (
-                  <Oval color="black" height={20} width={20} />
-                ) : (
-                  `${balance?.free?.toFixed(4)}`
-                )}
-              </div>
-            </div>
-            <span className="text-base text-black">
-              <AiFillCaretDown />
-            </span>
-          </button>
+              <span className="text-base text-black">
+                <AiFillCaretDown />
+              </span>
+            </button>
 
-          {isDropdown && (
-            <>
-              <div className="absolute bg-white z-50 top-14 right-0 left-0  p-2 py-3 px-2  border border-gray-200 shadow-xl rounded-md text-black font-normal">
-                <ul className="flex flex-col gap-3 cursor-pointer px-2">
-                  {coinData.map((item, index) => (
-                    <>
-                      <li
-                        key={index}
-                        onClick={() => handleSelect(item.name, index)}
-                        className="flex items-center gap-2 hover:text-blue-600"
-                      >
-                        <span className="text-lg">{item.icon}</span>
-                        {item.name}{" "}
-                      </li>
-                    </>
-                  ))}
-                </ul>
-              </div>
-            </>
-          )}
-        </div>
-        <div className="relative" ref={userdropdownRef}>
-          <div onClick={handleuserDropdown}>
-            <FaUser
-              fontSize={20}
-              className="text-gray-800 hover:opacity-80 transition-transform transform hover:scale-110 duration-100 ease-in-out"
-            />
+            {isDropdown && (
+              <>
+                <div className="absolute bg-white z-50 top-14 right-0 left-0  p-2 py-3 px-2  border border-gray-200 shadow-xl rounded-md text-black font-normal">
+                  <ul className="flex flex-col gap-3 cursor-pointer px-2">
+                    {coinData.map((item, index) => (
+                      <>
+                        <li
+                          key={index}
+                          onClick={() => handleSelect(item.name, index)}
+                          className="flex items-center gap-2 hover:text-blue-600"
+                        >
+                          <span className="text-lg">{item.icon}</span>
+                          {item.name}{" "}
+                        </li>
+                      </>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
           </div>
+          <div className="relative" ref={userdropdownRef}>
+            <div onClick={handleuserDropdown}>
+              <FaUser
+                fontSize={20}
+                className="text-gray-800 hover:opacity-80 transition-transform transform hover:scale-110 duration-100 ease-in-out"
+              />
+            </div>
 
-          {isUserDropdown && (
-            <>
-              <div className="absolute bg-white top-10 right-0 w-32 p-2 py-3 px-2  border border-gray-200 shadow-xl rounded-md text-black font-normal">
-                <ul className="flex flex-col gap-3 cursor-pointer px-2">
-                  <li
-                    className="hover:text-blue-600 flex gap-1 items-center"
-                    onClick={handleLogout}
-                  >
-                    <span>
-                      <MdLogout />
-                    </span>
-                    Logout
-                  </li>
-                </ul>
-              </div>
-            </>
-          )}
+            {isUserDropdown && (
+              <>
+                <div className="absolute bg-white top-10 right-0 w-32 p-2 py-3 px-2  border border-gray-200 shadow-xl rounded-md text-black font-normal">
+                  <ul className="flex flex-col gap-3 cursor-pointer px-2">
+                    <li
+                      className="hover:text-blue-600 flex gap-1 items-center"
+                      onClick={handleLogout}
+                    >
+                      <span>
+                        <MdLogout />
+                      </span>
+                      Logout
+                    </li>
+                  </ul>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      <ToastComponent />
+    </>
   );
 };
 

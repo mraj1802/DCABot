@@ -1,42 +1,59 @@
-const { FetchOrderDetails, SellOrders } = require("../API/marketAPI");
-const BotModel = require("../models/botShcema");
+const { FetchOrderDetails, CreateOrdersLimit } = require("../API/marketAPI");
+const DealModel = require("../models/dealSchema");
 
 const sellWatchDog = async () => {
   try {
-    const bots = await BotModel.find({ active: true });
+    const bots = await DealModel.find({ active: true, isStart: true });
     for (let bot of bots) {
-      console.log("bot", bot);
       if (bot.orders.length > 0) {
         const data = bot.orders.filter((el) => el.filled === 1);
         console.log("bots", data);
         if (data.length > 0) {
-          for (let obj of data) {
-            const result = await SellOrders(obj.qty, obj.target);
-            if (result.status === "filled" && result.id === data.orderID) {
-              await BotModel.updateOne(
-                { _id: bot._id, "orders.orderNo": bot.orders.orderNo },
-                { $set: { "orders.$.filled": 1 } }
+          for (let i = 0; i < data.length; i++) {
+            let obj = data[i];
+            if (!obj.SellID) {
+              let amount = parseFloat(obj.qty);
+              let price = parseFloat(obj.target);
+              const sellOrderPlaced = await CreateOrdersLimit(
+                bot.config["pair"],
+                "limit",
+                "sell",
+                amount,
+                price
               );
-              console.log("result...", result);
+
+              if (sellOrderPlaced && sellOrderPlaced.id) {
+                const updatedOrders = [...data];
+                updatedOrders[i].SellID = sellOrderPlaced.id;
+
+                console.log("sell updatedOrders...", updatedOrders);
+                await DealModel.updateOne(
+                  { _id: bot._id },
+                  { $set: { orders: updatedOrders } }
+                );
+              }
+            } else {
+              const result = await FetchOrderDetails(
+                obj.SellID,
+                bot.config["pair"]
+              );
+              if (result.status === "closed" && result.id === obj.SellID) {
+                await DealModel.updateOne(
+                  { _id: bot._id, "orders.SellID": result.id },
+                  { $set: { "orders.$.status": 1 } }
+                );
+                console.log(
+                  "result................................................."
+                );
+              }
             }
           }
         }
-        // if (data !== null || data !== undefined) {
-        //   //   const result = await FetchOrderDetails(
-        //   //     bot.exchange,
-        //   //     data.orderID,
-        //   //     bot.config["pairs"]
-        //   //   );
-
-        //   //selling the data;
-
-        //
-        // }
-        console.log("order data not filled.");
+        console.log("Sell watch dog executed successfully.");
       }
     }
   } catch (error) {
-    console.log("error in watch dog.", error);
+    console.log("error in sell watch dog.", error);
   }
 };
 
