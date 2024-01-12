@@ -209,10 +209,10 @@ const getActiveBot = async (req, res) => {
 
 const deleteBot = async (req, res) => {
   const { id } = req.params;
-  console.log("id", id);
+  console.log("id......................", id);
   try {
     const deletedBot = await BotModel.findById(id);
-
+    console.log("deletedBot......................", id);
     if (!deletedBot) {
       return res.status(404).json({ msg: "Bot not found." });
     }
