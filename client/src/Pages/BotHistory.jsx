@@ -241,27 +241,25 @@ const BotHistory = () => {
     </>
   );
 
-  const findPercentage=(i)=>
-  {
-    
+  const findPercentage = (i) => {
     const totalPrices = Data[i].orders
-    .filter((el) => el.filled === "1")
-    .reduce((acc, t) => acc + parseFloat(t.price), 0);
+      .filter((el) => el.filled === "1")
+      .reduce((acc, t) => acc + parseFloat(t.price), 0);
 
     const totalTargets = Data[i].orders
       .filter((el) => el.filled === "1")
       .reduce((acc, t) => acc + parseFloat(t.target), 0);
 
-    const profit = totalTargets-totalPrices;
+    const profit = totalTargets - totalPrices;
     const percentage = (profit / totalPrices) * 100;
 
     console.log(`Total Sum of Prices: ${totalPrices}`);
     console.log(`Total Sum of Targets: ${totalTargets}`);
     console.log(`profit: ${profit}`);
     console.log(`Percentage: ${percentage}`);
-
     return percentage;
-  }
+    
+  };
 
   return (
     <>
@@ -322,8 +320,6 @@ const BotHistory = () => {
 
                 <tbody className="text-[13px]">
                   {Data.map((items, index) => {
-                    
-
                     return (
                       <tr
                         key={index}
